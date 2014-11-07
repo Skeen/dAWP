@@ -7,6 +7,7 @@
         <div id='game_field' style="text-align:center"></div>
         </div>
         <script>
+            // TODO: Row and column is badly confused
             // Selected color
             var selected_color   = "#ffff00";
             var unselected_color = "#ff0000";
@@ -120,20 +121,128 @@
             // direction can be; left, up, right or down.
             function handle_movement(direction)
             {
-                // TODO: Remove this testing code
-                var selected = Number(document.getElementById('selected').innerHTML);
-                if(direction == 'up')
+                var selected_string = document.getElementById('selected').innerHTML;
+                if(selected == ' ')
                 {
-                    mark_selected(selected + 1);
+                    return;
                 }
-                else if (direction == 'down')
-                {
-                    mark_selected(selected - 1);
-                }
-
+                var selected = Number(selected_string);
+                
                 // Decide if we're able to do the requested move
-                // Do the requested move
+                var move_valid = true;
+                // Check for invalid moves, and set move_valid false if we hit such one
+                for(row = 0; row < game_board.length; row++)
+                {
+                    for (column = 0; column < game_board[row].length; column++) 
+                    {
+                        var div_name = game_board[row][column];
+                        var child_div = document.getElementById(div_name);
+                        if(child_div.innerHTML == String(selected))
+                        {
+                            // This is the one we're looking for, assert that
+                            // we're able to move in the requested direction.
+                            // 
+                            // We can move, if we;
+                            // * Keep inside the game board.
+                            // * Don't hit a number which isn't ours
+                            // TODO: Handle the case were the above/below, whatever is outside the board
+                            // TODO: Remove huge code duplication below
+                            switch(direction)
+                            {
+                                case 'left':
+                                    // Get the div to left
+                                    var div_left_name = game_board[row-1][column];
+                                    var left_div = document.getElementById(div_left_name);
+                     
+                                    // If the below is not empty, or ourselfs, we cannot move there
+                                    if(!(left_div.innerHTML == " " || left_div.innerHTML == selected))
+                                    {
+                                        move_valid = false;
+                                    }
+                                    break;
+                                case 'up':
+                                    // Get the div above
+                                    var div_above_name = game_board[row][column-1];
+                                    var above_div = document.getElementById(div_above_name);
+                     
+                                    // If the below is not empty, or ourselfs, we cannot move there
+                                    if(!(above_div.innerHTML == " " || above_div.innerHTML == selected))
+                                    {
+                                        move_valid = false;
+                                    }
+                                    break;
+                                case 'right':
+                                    // Get the div to right
+                                    var div_right_name = game_board[row+1][column];
+                                    var right_div = document.getElementById(div_right_name);
+                     
+                                    // If the below is not empty, or ourselfs, we cannot move there
+                                    if(!(right_div.innerHTML == " " || right_div.innerHTML == selected))
+                                    {
+                                        move_valid = false;
+                                    }
+                                    break;
+                                case 'down':
+                                    // Get the div below
+                                    var div_below_name = game_board[row][column+1];
+                                    var below_div = document.getElementById(div_below_name);
+                     
+                                    // If the below is not empty, or ourselfs, we cannot move there
+                                    if(!(below_div.innerHTML == " " || below_div.innerHTML == selected))
+                                    {
+                                        move_valid = false;
+                                    }
+                                    break;
+                            }
+                        }
+                    }
+                }
+              
+                alert('move valid: ' + move_valid);
 
+                // TODO: Movement needs a majer overhaul
+                if(move_valid)
+                {
+                    // Do the requested move
+                    for(row = 0; row < game_board.length; row++)
+                    {
+                        for (column = 0; column < game_board[row].length; column++) 
+                        {
+                            var div_name = game_board[row][column];
+                            var child_div = document.getElementById(div_name);
+                            if(child_div.innerHTML == String(selected))
+                            {
+                                // TODO: Handle multiblock blocks
+                                switch(direction)
+                                {
+                                    case 'left':
+                                        // Get the div to right
+                                        //var div_right_name = game_board[row+1][column];
+                                        //var right_div = document.getElementById(div_right_name);
+                                        var div_left_name = game_board[row-1][column];
+                                        var left_div = document.getElementById(div_left_name);
+                                    
+                                        left_div.innerHTML = child_div.innerHTML;
+                                        child_div.innerHTML = " ";
+                                        break;
+                                    case 'right':
+                                        // Get the div to right
+                                        //var div_right_name = game_board[row+1][column];
+                                        //var right_div = document.getElementById(div_right_name);
+                                        var div_right_name = game_board[row+1][column];
+                                        var right_div = document.getElementById(div_right_name);
+                                    
+                                        right_div.innerHTML = child_div.innerHTML;
+                                        child_div.innerHTML = " ";
+                                        break;
+
+                                }
+                            }
+                        }
+                    }
+                    // Refresh selection
+                    mark_selected(selected);
+                }
             }
 
             // Handle key presses
