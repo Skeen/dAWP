@@ -3,41 +3,67 @@
         <title>Klotski</title>
     </head>
     <body>
-        <div id='game_field'></div>
+        <div id='game_field' style="text-align:center"></div>
         </div>
         <script>
+            // Generate game board array
             var game_width  = 4;
             var game_height = 5;
 
             var game_board = [];
-            for(column = 0; column < game_height; column++)
+            for(column = 0; column < game_width; column++)
             {
                 var row_array = [];
-                for(row = 0; row < game_width; row++)
+                for(row = 0; row < game_height; row++)
                 {
                     var div_name = 'd' + row + column;
                     row_array.push(div_name);
                 }
                 game_board.push(row_array);
             }
-
+            
+            // Generate game board html
             var size = 100;
             var margin = 10;
+            var start_x = window.innerWidth/2 - (game_width * (size + margin))/2;
             
             var div = document.getElementById('game_field');
-            for (row = 0; row < game_board.length; row++) 
+            for(row = 0; row < game_board.length; row++)
             {
-                for(column = 0; column < game_board[row].length; column++)
+                for (column = 0; column < game_board[row].length; column++) 
                 {
                     var div_name = game_board[row][column];
-                    var child_div = document.createElement(div_name);
+                    var child_div = document.createElement('div');
+                    child_div.id = div_name;
                     child_div.style.width  = size + 'px';
                     child_div.style.height = size + 'px';
                     child_div.style.backgroundColor = "#ff0000"; 
-                    child_div.style.left = (margin + column * (size + margin)) + "px";
-                    child_div.style.top  = (margin + row * (size + margin)) + "px";
+                    child_div.style.left = (start_x + row * (size + margin)) + "px";
+                    child_div.style.top  = (margin + column * (size + margin)) + "px";
                     child_div.style.position = "absolute";
+                    child_div.style.textAlign="center";
+
+                    var content = document.createTextNode(div_name);
+                    child_div.appendChild(content);
+
                     div.appendChild(child_div);
+                }
+            }
+            
+            // Generate game board logic
+            var game_logic = [['1', '0', '0', '2'],
+                              ['1', '0', '0', '2'],
+                              ['3', '4', '4', '5'],
+                              ['3', '6', '7', '5'],
+                              ['8', ' ', ' ', '9']];
+            for(row = 0; row < game_board.length; row++)
+            {
+                for (column = 0; column < game_board[row].length; column++) 
+                {
+                    var div_name = game_board[row][column];
+                    var child_div = document.getElementById(div_name);
+
+                    child_div.innerHTML = game_logic[column][row];
                 }
             }
         </script>
