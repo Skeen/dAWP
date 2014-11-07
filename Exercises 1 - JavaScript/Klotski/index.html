@@ -105,6 +105,14 @@
             {
                 for (column = 0; column < game_board[row].length; column++) 
                 {
+                    var div_name = game_board[row][column];
+                    var child_div = document.getElementById(div_name);
+                    
+                    // When a div is clicked, select it
+                    child_div.addEventListener('click',function()
+                    {
+                        mark_selected(this.innerHTML);
+                    },false);
                 }
             }
              
