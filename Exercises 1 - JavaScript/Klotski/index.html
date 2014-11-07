@@ -1,0 +1,45 @@
+<html>
+    <head>
+        <title>Klotski</title>
+    </head>
+    <body>
+        <div id='game_field'></div>
+        </div>
+        <script>
+            var game_width  = 4;
+            var game_height = 5;
+
+            var game_board = [];
+            for(column = 0; column < game_height; column++)
+            {
+                var row_array = [];
+                for(row = 0; row < game_width; row++)
+                {
+                    var div_name = 'd' + row + column;
+                    row_array.push(div_name);
+                }
+                game_board.push(row_array);
+            }
+
+            var size = 100;
+            var margin = 10;
+            
+            var div = document.getElementById('game_field');
+            for (row = 0; row < game_board.length; row++) 
+            {
+                for(column = 0; column < game_board[row].length; column++)
+                {
+                    var div_name = game_board[row][column];
+                    var child_div = document.createElement(div_name);
+                    child_div.style.width  = size + 'px';
+                    child_div.style.height = size + 'px';
+                    child_div.style.backgroundColor = "#ff0000"; 
+                    child_div.style.left = (margin + column * (size + margin)) + "px";
+                    child_div.style.top  = (margin + row * (size + margin)) + "px";
+                    child_div.style.position = "absolute";
+                    div.appendChild(child_div);
+                }
+            }
+        </script>
+    </body>
+</html>
