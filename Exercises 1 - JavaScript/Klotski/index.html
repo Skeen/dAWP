@@ -82,7 +82,7 @@
                     {
                         var div_name = game_board[row][column];
                         var child_div = document.getElementById(div_name);
-                        if(child_div.innerHTML == block_number)
+                        if(child_div.innerHTML == String(block_number))
                         {
                             child_div.style.backgroundColor = selected_color; 
                         }
@@ -94,7 +94,7 @@
                 }
                 // Write out the collected to our div
                 var selected_span = document.getElementById('selected');
-                selected_span.innerHTML = block_number;
+                selected_span.innerHTML = String(block_number);
             }
 
             // Default select 0
@@ -115,7 +115,46 @@
                     },false);
                 }
             }
-             
+
+            // Handle keyboard input.
+            // direction can be; left, up, right or down.
+            function handle_movement(direction)
+            {
+                // TODO: Remove this testing code
+                var selected = Number(document.getElementById('selected').innerHTML);
+                if(direction == 'up')
+                {
+                    mark_selected(selected + 1);
+                }
+                else if (direction == 'down')
+                {
+                    mark_selected(selected - 1);
+                }
+
+                // Decide if we're able to do the requested move
+                // Do the requested move
+
+            }
+
+            // Handle key presses
+            function handle_key_input(e)
+            {
+                // Get the pressed key
+                var pressed_key = window.event ? event.keyCode: e.keyCode;
+                if(pressed_key && pressed_key > 36 && pressed_key < 41) 
+                {
+                    // An arrow key was pressed
+                    var arrow_keys = {'37':'left', '38':'up', '39':'right', '40':'down'};
+                    console.log("arrow-key pressed: " + arrow_keys[pressed_key]);
+                    handle_movement(arrow_keys[pressed_key]);
+                }
+                else
+                {
+                    console.log("non arrow-key pressed: " + pressed_key);
+                }
+            }
+            // Register handler for key presses
+            document.onkeydown = handle_key_input;
         </script>
     </body>
 </html>
