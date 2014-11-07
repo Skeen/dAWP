@@ -3,9 +3,14 @@
         <title>Klotski</title>
     </head>
     <body>
+        <div>Selected: <span id='selected'></span></div>
         <div id='game_field' style="text-align:center"></div>
         </div>
         <script>
+            // Selected color
+            var selected_color   = "#ffff00";
+            var unselected_color = "#ff0000";
+
             // Generate game board array
             var game_width  = 4;
             var game_height = 5;
@@ -37,7 +42,7 @@
                     child_div.id = div_name;
                     child_div.style.width  = size + 'px';
                     child_div.style.height = size + 'px';
-                    child_div.style.backgroundColor = "#ff0000"; 
+                    child_div.style.backgroundColor = unselected_color; 
                     child_div.style.left = (start_x + row * (size + margin)) + "px";
                     child_div.style.top  = (margin + column * (size + margin)) + "px";
                     child_div.style.position = "absolute";
@@ -66,6 +71,43 @@
                     child_div.innerHTML = game_logic[column][row];
                 }
             }
+
+            // Highlight the selected block-number
+            function mark_selected(block_number)
+            {
+                // Change color for selection of a new block
+                for(row = 0; row < game_board.length; row++)
+                {
+                    for (column = 0; column < game_board[row].length; column++) 
+                    {
+                        var div_name = game_board[row][column];
+                        var child_div = document.getElementById(div_name);
+                        if(child_div.innerHTML == block_number)
+                        {
+                            child_div.style.backgroundColor = selected_color; 
+                        }
+                        else
+                        {
+                            child_div.style.backgroundColor = unselected_color;
+                        }
+                    }
+                }
+                // Write out the collected to our div
+                var selected_span = document.getElementById('selected');
+                selected_span.innerHTML = block_number;
+            }
+
+            // Default select 0
+            mark_selected('0');
+
+            // Register selection handler for each div
+            for(row = 0; row < game_board.length; row++)
+            {
+                for (column = 0; column < game_board[row].length; column++) 
+                {
+                }
+            }
+             
         </script>
     </body>
 </html>
