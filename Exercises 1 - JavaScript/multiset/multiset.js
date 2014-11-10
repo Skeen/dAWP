@@ -57,6 +57,11 @@ var multiset = function() {
 	},
 
 	toString: function() {
+	    var str = "";
+	    for (key in set){
+		str += "<span class='key'>'" + key + "':</span> " + JSON.stringify(set[key]) + "<br>\n";
+	    }
+	    return str;
 	}
     }
 }

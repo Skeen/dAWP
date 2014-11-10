@@ -189,11 +189,29 @@ var testRunner = function() {
     document.getElementById("status").innerHTML = "Done";
 }
 
+var runTests = function() {
+    testRunner();
+
+    var set = multiset();
+    set.add(true);
+    set.add("Hej");
+    set.add(6);
+    set.add("true");
+    set.add("6");
+    set.add(6);
+    set.add(Object);
+
+    var str = set.toString();
+    console.log(str);
+    
+    document.getElementById("toStringBox").innerHTML = str;
+}
+
 var start = document.getElementById("start");
 if (start.addEventListener === undefined) {
     // Internet Explorer
-    start.attachEvent("onclick", testRunner)
+    start.attachEvent("onclick", runTests)
 } else {
     // Sanity
-    start.addEventListener("click", testRunner);
+    start.addEventListener("click", runTests);
 }
