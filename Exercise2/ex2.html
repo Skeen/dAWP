@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Exercise 2</title>
+	</head>
+	<body>
+		<script>
+			var Pet = function (n){
+				this.name = n;
+			}
+			Pet.prototype.setName = function(n) {
+				this.name = n;
+			}
+			Pet.prototype.getName = function() {
+				return this.name;
+			}
+
+
+			var Dog = function (){}
+			Dog.prototype = new Pet();
+			Dog.prototype.sound = function() {
+				return "Wuf";
+			}
+
+			var Cat = function (){}
+			Cat.prototype = new Pet();
+			Cat.prototype.sound = function() {
+				return "Meow";
+			}
+
+		</script>
+	</body>
+</html>
