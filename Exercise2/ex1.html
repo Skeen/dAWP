@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Exercise 1</title>
+	</head>
+	<body>
+		<div>
+			<h3>CodeBox</h3>
+			<textarea rows="10" cols="65" id="msg"></textarea></br>
+			<button id="runButton" onclick="execute()">Run</button>
+		</div>
+		<div>
+			<h3>Result</h3>
+			<div id="resultArea" style="background: #F6F6F6; width: 15%; height: 100px;"></div>
+		</div>
+
+		<script>
+			function execute(){
+				var txt = document.getElementById('msg').value;
+				var result = eval(txt);
+
+				document.getElementById('resultArea').innerHTML = result;
+			}
+		</script> 
+	</body>
+</html>

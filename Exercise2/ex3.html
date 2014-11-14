@@ -1,0 +1,169 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>Exercise 3</title>
+	</head>
+	<body onload="init()">
+		<h3>Sort the numbers to win!</h3>
+		<h5>Smallest -> biggest</h5>
+		<table>
+			<tr>
+				<td id="td1">
+					<span id="drag1" draggable="true" ondragstart="drag(event)" ondrop="drop(event)" ondragover="allowDrop(event)"></span>
+				</td>
+				<td id="td2">
+					<span id="drag2" draggable="true" ondragstart="drag(event)" ondrop="drop(event)" ondragover="allowDrop(event)"></span>
+				</td>
+				<td id="td3">
+					<span id="drag3" draggable="true" ondragstart="drag(event)" ondrop="drop(event)" ondragover="allowDrop(event)"></span>
+				</td>
+				<td id="td4">
+					<span id="drag4" draggable="true" ondragstart="drag(event)" ondrop="drop(event)" ondragover="allowDrop(event)"></span>
+				</td>
+				<td id="td5">
+					<span id="drag5" draggable="true" ondragstart="drag(event)" ondrop="drop(event)" ondragover="allowDrop(event)"></span>
+				</td>
+				<td id="td6">
+					<span id="drag6" draggable="true" ondragstart="drag(event)" ondrop="drop(event)" ondragover="allowDrop(event)"></span>
+				</td>
+				<td id="td7">
+					<span id="drag7" draggable="true" ondragstart="drag(event)" ondrop="drop(event)" ondragover="allowDrop(event)"></span>
+				</td>
+				<td id="td8">
+					<span id="drag8" draggable="true" ondragstart="drag(event)" ondrop="drop(event)" ondragover="allowDrop(event)"></span>
+				</td>
+				<td id="td9">
+					<span id="drag9" draggable="true" ondragstart="drag(event)" ondrop="drop(event)" ondragover="allowDrop(event)"></span>
+				</td>
+				<td id="td10">
+					<span id="drag10" draggable="true" ondragstart="drag(event)" ondrop="drop(event)" ondragover="allowDrop(event)"></span>
+				</td>
+			</tr>
+		</table>
+		</br>
+
+		<div id="test"></div>
+		
+		<style>
+			span {
+				background: #FF0000;
+				padding-left: 20px;
+				padding-right: 20px;
+				padding-bottom: 10px;
+				padding-top: 10px;
+				border: 1px solid black;
+			}
+			table {
+				border: 1px solid black;
+			}
+			td {
+				height: 40px;
+				width: 57px;
+				border: 1px solid black;
+			}
+		</style>
+		<script>
+
+			function init(){
+				for(i=1; i<11; i++){
+					var tmp = Math.floor((Math.random() * 10000) + 1);
+					document.getElementById("drag"+i).innerHTML = tmp;
+				}
+
+				if(typeof(Storage) !== "undefined"){
+					var tmp = 0;
+					document.getElementById('test').innerHTML = "Games played: " + tmp;
+					localStorage.setItem("played", tmp);
+				} else {
+					document.getElementById('test').innerHTML = "Sorry, your browser does not support Web Storage...";
+				}
+			}
+
+			function reset(){
+				for(i=1; i<11; i++){
+					var tmp = Math.floor((Math.random() * 10000) + 1);
+					document.getElementById("drag"+i).innerHTML = tmp;
+				}
+			}
+
+			function allowDrop(ev) {
+   				ev.preventDefault();
+			}
+
+			function drag(ev) {
+    			ev.dataTransfer.setData("text", ev.target.id);
+			}
+
+			function drop(ev) {
+    			ev.preventDefault();
+    			var data = ev.dataTransfer.getData("text");
+
+    			var tmp1 = document.getElementById(data).innerHTML;
+    			var tmp2 = ev.target.innerHTML;
+
+    			//document.getElementById('test1').innerHTML = tmp1;
+    			//document.getElementById('test2').innerHTML = tmp2;
+
+    			ev.target.innerHTML = tmp1;
+    			document.getElementById(data).innerHTML = tmp2;
+    			checkVictory();
+			}
+
+			function checkVictory(){
+				var val1 = parseInt(getValue(document.getElementById('td1').innerHTML));
+				var val2 = parseInt(getValue(document.getElementById('td2').innerHTML));
+				var val3 = parseInt(getValue(document.getElementById('td3').innerHTML));
+				var val4 = parseInt(getValue(document.getElementById('td4').innerHTML));
+				var val5 = parseInt(getValue(document.getElementById('td5').innerHTML));
+				var val6 = parseInt(getValue(document.getElementById('td6').innerHTML));
+				var val7 = parseInt(getValue(document.getElementById('td7').innerHTML));
+				var val8 = parseInt(getValue(document.getElementById('td8').innerHTML));
+				var val9 = parseInt(getValue(document.getElementById('td9').innerHTML));
+				var val10 = parseInt(getValue(document.getElementById('td10').innerHTML));
+				
+
+				
+				//alert(val1+", "+val2+", "+val3+", "+val4+", "+val5+", "+val6+", "+val7+", "+val8+", "+val9+", "+val10);
+				if(val1<val2 && val2<val3){
+					//alert("TEST1");
+					if(val3<val4 && val4<val5){
+					//	alert("TEST2");
+						if(val5<val6 && val6<val7){
+					//		alert("TEST3");
+							if(val7<val8 && val8<val9){
+					//			alert("TEST4");
+								if(val9<val10){
+						//			alert("TEST5");
+									alert("VICTORIOUS!!!!!!");
+									reset();
+									if(typeof(Storage) != "undefined"){
+										var tmp = localStorage.getItem("played");
+										//alert("tmp: " + tmp);
+										var tmp2 = parseInt(tmp)+1;
+										//alert("tmp2: " + tmp2)
+										document.getElementById('test').innerHTML = "Games played: " + tmp2;
+										localStorage.setItem("played", tmp2);
+									} else {
+										document.getElementById('test').innerHTML = "Sorry, your browser does not support Web Storage...";
+									}
+								}
+
+							}
+						}
+					}
+				}
+			}
+
+			function getValue(val){
+				var tmp = val.match(/\d+/g);
+				return tmp[1];
+			}
+
+			function div1Val(ev){
+				thenum = (ev.target.id).match(/\d+/)[0]; // "3"
+				alert("target: " + ev.target.id + "   id: " + thenum);
+
+			}
+		</script>
+	</body>
+</html>
