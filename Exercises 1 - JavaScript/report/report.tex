@@ -1,0 +1,80 @@
+%%% TeX-command-extra-options: "-shell-escape"
+\documentclass[a4paper,10pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{listings}
+\usepackage{minted}
+
+\author{
+Søren Krogh -  20105661 \\
+Emil Madsen - 20105376  \\
+K. Rohde Fischer - 20052356\\}
+\title{}
+\begin{document}
+\maketitle
+
+\section*{Introduction}
+
+\section*{Unit testing}
+A simple unit testing framework is created to make unit testing
+easier.  The structure is fairly simple and is roughly based on a talk
+by Christian Johansen (unfortunately it is no longer available on the
+net).
+
+The testing framework works by iterating a test object and running all
+functions inside it.  Two special function names are defined, $init$
+and $finalize$, which are used to prepare each test and finalize it if
+necessary.  Otherwise these are ignored.
+
+As the way to loop all inner objects of an object is by using the for
+... in ... construction there are multiple ways to prevent the
+execution of those as tests.  In this tester they are just ignored by
+matching the names $init$ and $finalize$ and just skipping those.
+Another way would have been to use the DontEnum-construction of
+JavaScript.  This is not used to two reasons: then it works by a
+naming convention rather than a special construction (even if we want
+that the naming convention is needed for JavaScript to find those),
+and the construction of DontEnums are rather complex:
+
+\begin{minted}[linenos, frame=lines]{js}
+  // The test object containing tests
+  var testObject = {
+    test1: function() { /* ... */ },
+    test2: function() { /* ... */ }
+    // ...
+  }
+
+  Object.defineProperty(testObject, "init", { dontenum: true })
+\end{minted}
+
+This can also be done by overriding the $propertyIsEnumerable$
+function or by introducing inheritance through prototypes.
+
+It is noteworthy that the testing system could be improved by using
+the exception structure when a test failes, because that would allow
+multiple assertions inside each test function.  Another noteworthy
+thing is that due to the for ... in ... construction and the way
+JavaScript just handly object names as strings unit tests could be
+developed like this:
+
+\begin{minted}[linenos, frame=lines]{js}
+  // The test object containing tests
+  var testObject = {
+    "should do something": function() { /* ... */ },
+    "should do something different": function() { /* ... */ }
+    // ...
+  }
+\end{minted}
+
+To enable usage of natural language and let us simply use the function
+names to provide good output when a test fails.  This has not been
+used here though.
+
+\section*{Multiset}
+
+\section*{Ice cream shop}
+
+\section*{Klotski}
+
+\section*{Conlusion}
+
+\end{document}
