@@ -1,4 +1,3 @@
-%%% TeX-command-extra-options: "-shell-escape"
 \documentclass[a4paper,10pt]{article}
 \usepackage[utf8]{inputenc}
 \usepackage{listings}
@@ -13,14 +12,20 @@ K. Rohde Fischer - 20052356\\}
 \maketitle
 
 \section*{Introduction}
+To assist in understanding the project, here's a short introduction to
+the various parts of it.  The unit testing is a part of the multiset.
+Throughout the documents the JavaScript is loaded as the last thing.
+This structure is becoming used in modern web development, to ensure
+that visuals load before the JavaScript gets parsed, so the user gets
+fast visual feedback.  Here it's just used because that structure is
+slowly beginning to be considered as a good coding standard.
 
 \section*{Unit testing}
 A simple unit testing framework is created to make unit testing
 easier.  The structure is fairly simple and is roughly based on a talk
-by Christian Johansen (unfortunately it is no longer available on the
-net).
+by Christian Johansen.
 
-The testing framework works by iterating a test object and running all
+The testing framework works by iterating an object and running all
 functions inside it.  Two special function names are defined, $init$
 and $finalize$, which are used to prepare each test and finalize it if
 necessary.  Otherwise these are ignored.
@@ -70,11 +75,37 @@ names to provide good output when a test fails.  This has not been
 used here though.
 
 \section*{Multiset}
+The multiset is created using test-driven development.  Most of the
+implementation is quite straight forward (for details on the testing
+see the unit testing section).  There was some uncertainty on whether
+it should use $toString$ or $hashCode$ for the keys.  The design
+chosen was $toString$ due to simplicity.  This ensures that all
+existing JavaScript objects works in the selected implementation
+without creating custom objects.  If $hasCode$ was used we would have
+had to create custom objects for the purpose of testing.
+
+The output from $toString$ on the multiset is unspecified in the
+documentation.  Since a set is independent of the order of objects it
+will be very hard to do proper testing without using $RegEx$.  For
+these reasons we have chosen a more web friendly output for the
+toString that wraps the items on separate lines and adds a class to
+the key, enabling CSS styling.  The output is thus also tested by
+visual verification rather than unit testing.
 
 \section*{Ice cream shop}
+The Ice Cream Shop follows a simple pattern where it listens for
+changes and ensure that the given constraints are followed.  The design is
+kept as simple as possible.
 
 \section*{Klotski}
+The Klotski game works by selecting a tile and then using the arrow
+keys to move it around.  To control the keys an event listener waits
+for key presses, then it validates the move, to see if it is legal and
+then performs the move.
 
-\section*{Conlusion}
+At a few places variables are used to store in between calculations
+due to the double loop structure.  Problems can occur if the move is
+performed during the loop, since the loop might continue to the new
+location of a tile and re-perform the move.
 
 \end{document}
