@@ -7,25 +7,66 @@
 Søren Krogh -  20105661 \\
 Emil Madsen - 20105376  \\
 K. Rohde Fischer - 20052356\\}
-\title{}
+\title{Exercise 2 - More JavaScript and HTML5}
 \begin{document}
 \maketitle
-
-\section*{Introduction}
-
 
 \section*{Embedded JavaScript}
 
 \begin{minted}[linenos, frame=lines]{js}
-  // The test object containing tests
-  var testObject = {
-    test1: function() { /* ... */ },
-    test2: function() { /* ... */ }
-    // ...
-  }
-
-  Object.defineProperty(testObject, "init", { dontenum: true })
+  void(window.setInterval(function() {document.title = new Date}, 1000))
 \end{minted}
+Running this code in the browser, returns 'undefined', and changes the title of the page to the date and time. the time is updated every second.
+In JavaScript the void operator allows expressions that produce side effects into places where an expression that evaluates to 'undifined' is desired. Hence 'undefined' is returned.
+
+\begin{minted}[linenos, frame=lines]{js}
+  foo = { bar: "CWP" }
+  bar = "bar"
+  foo.undefined = foo[bar]
+  foo[foo.bar.baz]
+\end{minted}
+If this pice of code is run, "CWP" is returned.
+First a new variable 'foo' is declared and a new object 'bar' with value "CWP" is constructed. Next 'bar' is set to be equal to the string "bar". Then 'foo.undefined' that otherwise would return 'undefined' is set to be equal to 'foo[bar]' which returns "CWP".
+Because 'foo.undefined' is set to 'foo[bar]'executing 'foo[foo.bar.baz]' returns "CWP". 
+
+
+\begin{minted}[linenos, frame=lines]{js}
+  function Msg(m) {this.msg = m; this.number = ++Msg.prototype.counter;}
+  Msg.prototype.counter = 0;
+  Msg.prototype.show = function() {alert("Message number " + this.number + " is: " + this.msg);};
+  var x = new Msg("hello");
+  var y = new Msg("world");
+  x.show();
+  y.show();
+  x.counter;
+\end{minted}
+This will show two dialog boxes, the first saying "Message number 1 is:hello" and the second "Message number 2 is:world" and then return 2.
+First the function 'Msg' which takes one parameter is created. The function sets 'this.msg' to the parameter, and sets 'this.number' to ++"the function counter".
+Next the counter is set to 0.
+Then the property 'show' is added to the 'Msg' objects. 'show' creates an alert message using 'this.number' to get the number of the message and 'this.msg' to get the actual message. The two messages 'hello' and 'world' is created and assigned to the two variables 'x' and 'y' respectively. Then the two messages are shown using the 'show()' property. Lastly 'x.counter' is executed which returnes the current state of the Msg counter, which at this state afte creating the two messages is 2 .
+
+
+\begin{minted}[linenos, frame=lines]{js}
+  function Person(n) {
+    this.name = n || "???"
+    Person.prototype.count++
+  }
+  Person.prototype.count = 0
+  function Student(n,s) {
+    this.base = Person
+    this.base(n)
+    delete this.base
+    this.studentid = s
+  }
+  Student.prototype = new Person
+  var x = new Student("Joe Average", "100026")
+  x.count
+\end{minted}
+Runnig this will return the value 2.
+First the function 'Person' is created. This takes one parameter and creates a Person object with the given parameter as the name and the increments the counter. If no parameter is given, 'this.name' is set to "???".
+Then the counter is set to 0.
+Next the function 'Student' is created. 'Student' takes two parameters. A new property called 'base' is created and set to the value of the 'Person' constructor. Then the 'base' method is called and the 'n' parameter is given as argument. Then 'this.base' is deleted. lastly 'this.studentid' is set to the second parameter.
+Dynamic inheritance is set up by executing "Student.prototype = new Person". This also increments the 'Person' counter. Then a new 'Student' object is created and assigned to the variable 'x'. Because 'Studen' inherits from 'Person', the 'Person' counter is incremented so when finaly 'x.count' is called, the value 2 is returned.
 
 
 \section*{Object oriented hierarchy}
