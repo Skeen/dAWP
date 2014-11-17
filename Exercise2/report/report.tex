@@ -29,8 +29,42 @@ K. Rohde Fischer - 20052356\\}
 
 
 \section*{Object oriented hierarchy}
-5) Yes with "One-shot-closure"
+The simple inheritance hierachy is done by using the built in
+prototype mechanism in JavaScript.  To test this a div box with the
+outputs from the different calls has been created, as this creates the
+simplest test bench possible.
 
+It is possible to ensure that Pet can never be instantiated through
+the one-shot closure:
+
+\begin{minted}[linenos, frame=lines]{js}
+  // Global scope variables
+  // In actually they should probably be in a module
+  var Dog;
+  var Cat;
+
+  function() {
+    // This is a variable limited to the function scope.
+    var Pet = function() { /* ... */ };
+
+    Dog = function() { /* ... */ };
+    Cat = function() { /* ... */ };
+    Dog.prototype = new Pet()
+    /* ... other prototype actions ... */
+    Cat.prototype = new Pet()
+    /* ... other prototype actions ... */
+  }();
+\end{minted}
+
+For concealing the name property the only option is to create a
+separate getName function for each subclass, thus eliminating the
+smart practicality with inheritance.  This has been demonstrated in
+the Dog class, but would be quite impractical in the long run.  The
+solution require the usage of ``DontDelete'' ($configurable: false$)
+and ``Read-only'' ($writable: false$).
+
+The technique for making sound read-only is the same as for getName,
+albeit more practical as they aren't defined on the inheritance level.
 
 \section*{Fun Sorting Game}
 
