@@ -4,19 +4,32 @@
 		<title>Exercise 2</title>
 	</head>
 	<body>
+		<div id="testDiv"></div>
 		<script>
+			var testDiv = document.getElementById("testDiv");
 			var Pet = function (n){
 				this.name = n;
 			}
 			Pet.prototype.setName = function(n) {
 				this.name = n;
 			}
-			Pet.prototype.getName = function() {
-				return this.name;
+			//Pet.prototype.getName = function() {
+			//	return this.name;
+			//}
+
+			Object.defineProperty(Pet.prototype, "getName", {value: function() {return "Inject";}, writable: false, configurable: false})
+
+			var Dog = function (name){ 
+				var getName = function (){ 
+					return name;
+				}
+
+				Object.defineProperty(this, "getName", {
+					value: getName,
+					writable: false,
+					configurable: false
+				})
 			}
-
-
-			var Dog = function (){}
 			Dog.prototype = new Pet();
 			Dog.prototype.sound = function() {
 				return "Wuf";
@@ -28,6 +41,29 @@
 				return "Meow";
 			}
 
+			var odie = new Dog("Odie");
+			var garfield = new Cat();
+			garfield.setName("Garfield");
+
+			testDiv.innerHTML += "<p>" + odie.getName()+ " says: " + odie.sound() + "</p>";
+			testDiv.innerHTML += "<p>" + garfield.getName()+ " says: " + garfield.sound() + "</p>";
+
+			
+			testDiv.innerHTML += "<h3>Trying to modify read-only name property</h3>"
+			
+			odie.setName("Jon");
+			testDiv.innerHTML += "<p>" + odie.getName()+ " says: " + odie.sound() + "</p>";
+			
+			odie.name = "Liz";
+			testDiv.innerHTML += "<p>" + odie.getName()+ " says: " + odie.sound() + "</p>";
+			
+			odie.getName = function(){ 
+				return "Pooky";
+			}
+			testDiv.innerHTML += "<p>" + odie.getName()+ " says: " + odie.sound() + "</p>";
+
+			delete odie.getName;
+			testDiv.innerHTML += "<p>" + odie.getName()+ " says: " + odie.sound() + "</p>";
 		</script>
 	</body>
 </html>
