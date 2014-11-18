@@ -1,130 +1,98 @@
-function init(){
-    for(i=1; i<11; i++){
-	var tmp = Math.floor((Math.random() * 10000) + 1);
-	document.getElementById("drag"+i).innerHTML = tmp;
-    }
-
-    if(typeof(Storage) !== "undefined"){
-	var tmp = 0;
-	document.getElementById('test').innerHTML = "Games played: " + tmp;
-	localStorage.setItem("played", tmp);
-    } else {
-	document.getElementById('test').innerHTML = "Sorry, your browser does not support Web Storage...";
+function reset()
+{
+    var numberRow = document.getElementById('numberRow');
+    // Loop through all the spans
+    for(i = 0; i < numberRow.children.length; i++)
+    {
+        // Generate a random number between 1-10000
+        var value = Math.floor((Math.random() * 10000) + 1);
+        // Set the span's innerHTMl to this number
+        document.getElementById("drag"+(i+1)).innerHTML = value;
     }
 }
 
-function reset(){
-    for(i=1; i<11; i++){
-	var tmp = Math.floor((Math.random() * 10000) + 1);
-	document.getElementById("drag"+i).innerHTML = tmp;
+function init()
+{
+    reset();
+
+    if(typeof(Storage) !== "undefined")
+    {
+        var num_played = 0;
+        document.getElementById('test').innerHTML = "Games played: " + num_played;
+        localStorage.setItem("played", num_played);
+    } 
+    else 
+    {
+        document.getElementById('test').innerHTML = "Sorry, your browser does not support Web Storage...";
     }
 }
 
-function allowDrop(ev) {
+function allowDrop(ev)
+{
+    // Prevent the default browser action
     ev.preventDefault();
 }
 
-function drag(ev) {
+function drag(ev)
+{
     ev.dataTransfer.setData("text", ev.target.id);
 }
 
-function drop(ev) {
+function drop(ev)
+{
+    // Prevent the default browser action
     ev.preventDefault();
-    var data = ev.dataTransfer.getData("text");
-
-    var tmp1 = document.getElementById(data).innerHTML;
-    var tmp2 = ev.target.innerHTML;
-
-    //document.getElementById('test1').innerHTML = tmp1;
-    //document.getElementById('test2').innerHTML = tmp2;
-
-    ev.target.innerHTML = tmp1;
-    document.getElementById(data).innerHTML = tmp2;
+    // The ID and HTML of the dragged
+    var draggedID = ev.dataTransfer.getData("text");
+    var draggedHTML = document.getElementById(draggedID).innerHTML;
+    // HTML of the 'onto' landing span.
+    var ontoHTML = ev.target.innerHTML;
+    // Swap their contents
+    ev.target.innerHTML = draggedHTML;
+    document.getElementById(draggedID).innerHTML = ontoHTML;
+    // Check if we're sorted
     checkVictory();
 }
 
-function getValue(val){
+function getValue(val)
+{
     var tmp = val.match(/\d+/g);
     return tmp[1];
 }
 
-function div1Val(ev){
-    thenum = (ev.target.id).match(/\d+/)[0]; // "3"
-    alert("target: " + ev.target.id + "   id: " + thenum);
-
-}
-
-function checkVictory(){
+function checkVictory()
+{
     var numberRow = document.getElementById('numberRow');
-
-    var prevVal, curVal;
-    for (i = 0; i < numberRow.children.length; i++) {
-	var td = numberRow.children[i];
-	curVal = parseInt(getValue(td.innerHTML));
-	// Due to first iteration
-	if (prevVal) {
-	    if (prevVal > curVal) return;
-	}
-	
-	prevVal = curVal;
+    // Start at 1, for us to be able to look back 1 when comparing
+    for(i = 1; i < numberRow.children.length; i++)
+    {
+        // Get i-1 as previous
+    	var prev = numberRow.children[i-1];
+	    var prevVal = parseInt(getValue(prev.innerHTML));
+        // Get i as current
+	    var cur = numberRow.children[i];
+	    var curVal = parseInt(getValue(cur.innerHTML));
+        // If the previous number is larger than the current, then we're not sorted.
+        if(prevVal > curVal) 
+        {
+            // And we return to avoid falling through the for loop
+            return;
+        }
     }
-
+    // At this point, we know that the spans are indeed in sorted order
     alert("VICTORIOUS!!!!!!");
+    // Reset the game, thereby readying for another game
     reset();
-    if(typeof(Storage) != "undefined"){
-	var tmp = localStorage.getItem("played");
-	//alert("tmp: " + tmp);
-	var tmp2 = parseInt(tmp)+1;
-	//alert("tmp2: " + tmp2)
-	document.getElementById('test').innerHTML = "Games played: " + tmp2;
-	localStorage.setItem("played", tmp2);
-    } else {
-	document.getElementById('test').innerHTML = "Sorry, your browser does not support Web Storage...";
+    // Up the number of games played
+    if(typeof(Storage) != "undefined")
+    {
+        var prevPlayed = localStorage.getItem("played");
+        var newPlayed = parseInt(prevPlayed)+1;
+        document.getElementById('test').innerHTML = "Games played: " + newPlayed;
+        localStorage.setItem("played", newPlayed);
+    } 
+    else 
+    {
+        document.getElementById('test').innerHTML = "Sorry, your browser does not support Web Storage...";
     }
-    
-    /*
-    var val1 = parseInt(getValue(document.getElementById('td1').innerHTML));
-    var val2 = parseInt(getValue(document.getElementById('td2').innerHTML));
-    var val3 = parseInt(getValue(document.getElementById('td3').innerHTML));
-    var val4 = parseInt(getValue(document.getElementById('td4').innerHTML));
-    var val5 = parseInt(getValue(document.getElementById('td5').innerHTML));
-    var val6 = parseInt(getValue(document.getElementById('td6').innerHTML));
-    var val7 = parseInt(getValue(document.getElementById('td7').innerHTML));
-    var val8 = parseInt(getValue(document.getElementById('td8').innerHTML));
-    var val9 = parseInt(getValue(document.getElementById('td9').innerHTML));
-    var val10 = parseInt(getValue(document.getElementById('td10').innerHTML));
-    
-
-    
-    //alert(val1+", "+val2+", "+val3+", "+val4+", "+val5+", "+val6+", "+val7+", "+val8+", "+val9+", "+val10);
-    if(val1<val2 && val2<val3){
-	//alert("TEST1");
-	if(val3<val4 && val4<val5){
-	    //	alert("TEST2");
-	    if(val5<val6 && val6<val7){
-		//		alert("TEST3");
-		if(val7<val8 && val8<val9){
-		    //			alert("TEST4");
-		    if(val9<val10){
-			//			alert("TEST5");
-			alert("VICTORIOUS!!!!!!");
-			reset();
-			if(typeof(Storage) != "undefined"){
-			    var tmp = localStorage.getItem("played");
-			    //alert("tmp: " + tmp);
-			    var tmp2 = parseInt(tmp)+1;
-			    //alert("tmp2: " + tmp2)
-			    document.getElementById('test').innerHTML = "Games played: " + tmp2;
-			    localStorage.setItem("played", tmp2);
-			} else {
-			    document.getElementById('test').innerHTML = "Sorry, your browser does not support Web Storage...";
-			}
-		    }
-
-		}
-	    }
-	}
-    }
-
-    */
 }

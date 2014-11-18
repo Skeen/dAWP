@@ -1,0 +1,39 @@
+The Fun Sorting game is implemented as a table with 10 columns, each containing a draggable span.
+Each span has a unique id, via. the naming scheme $drag(i) \:|\: i \in \{1,10\}$.
+The spans are sized and colored via. a small css snippet in 'ex3.html'.
+\newline
+The spans are hooked up to javascript via. the events; 'ondragstart', 'ondrop' and 'ondragover':
+\begin{minted}[linenos, frame=lines]{html}
+  <span id="drag1" draggable="true" ondragstart="drag(event)"
+   ondrop="drop(event)" ondragover="allowDrop(event)"></span>
+\end{minted}
+The game is started via. the 'onload' event of the html body. 
+\begin{minted}[linenos, frame=lines]{html}
+  <body onload="init()">
+\end{minted}
+Once the html page is loaded, control is passed to the javascript function 'init', via. the onload event of the html body.
+The init function calls the reset function, which runs through all 10 spans, generating and adding a random number for each of them.
+\newline
+It also checks if 'Storage' is supported by the browser, and if it is uses it to render the number of games played.
+If it is not supported, an error is written to notify the player.
+
+At this point the initial game is setup for playthrough.
+\newline\newline
+The drag and drop handles are quite straight forward. When an item is dragged (picked up), it's id is saved for when it's dropped.
+When the item is dropped, we check were we're dropped, and exchange to dragged and the one we're dropped on.
+We then check if the game is over (i.e. correctly sorted), if this is the case, we bump up the games played counter, and reset for another game.
+
+\begin{minted}[linenos, frame=lines]{js}
+function reset()
+{
+    var numberRow = document.getElementById('numberRow');
+    // Loop through all the spans
+    for(i = 0; i < numberRow.children.length; i++)
+    {
+        // Generate a random number between 1-10000
+        var value = Math.floor((Math.random() * 10000) + 1);
+        // Set the span's innerHTMl to this number
+        document.getElementById("drag"+(i+1)).innerHTML = value;
+    }
+}
+\end{minted}
