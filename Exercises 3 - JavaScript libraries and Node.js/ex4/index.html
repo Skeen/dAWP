@@ -1,0 +1,53 @@
+<!doctype html>
+<html>
+	<head>
+		<title>WebSocket Chat</title>
+
+		<script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+	</head>
+	<body>
+        <label>Username: </label>
+        <textarea style="resize:none" id='username' rows="1" cols="25">Anonymous</textarea>
+        <br/>
+        <textarea readonly id='chat' rows="25" cols="80">Welcome to WebSocket Chat!</textarea>
+        <br/>
+        <textarea id='input' rows="1" cols="60"></textarea>
+        <button id='submit'>Send</button>
+
+        <script>
+            var connection = new WebSocket('ws://localhost:8080');
+
+            connection.onopen = function(event) 
+            {
+                var data = {
+                    sender:  username.value,
+                    message: "HELLO SERVER"
+                };
+       
+                connection.send(JSON.stringify(data));
+            };
+
+            connection.onmessage = function(msg)
+            {
+                var chat = document.getElementById('chat');
+                var parsed = JSON.parse(msg.data);
+                chat.value = chat.value + "\n" + parsed.sender + ": " + parsed.message;
+            };
+
+            var submit = document.getElementById('submit');
+            submit.addEventListener("click", function(ev)
+            {
+                var username = document.getElementById('username');
+                var input = document.getElementById('input');
+
+                var data = {
+                    sender:  username.value,
+                    message: input.value
+                };
+       
+                connection.send(JSON.stringify(data));
+                input.value = "";
+            });
+        </script>
+	</body>
+</html>
