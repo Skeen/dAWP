@@ -1,0 +1,74 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Pets</title>
+
+    <style>
+      #objects {
+      width: 40em;
+      min-height: 12em;
+      border: 1px dashed grey;
+      border-radius: 0.4em;
+      background: #DDFFDD;
+      }
+
+      #objects div {
+      position: relative;
+      display: inline-block;
+      width: 8em;
+      padding: 0.3em;
+      margin: 0.6em;
+      border: 1px dashed grey;
+      border-radius: 0.4em;
+      baclground: #DDDDFF;
+      }
+
+      #objects div button {
+      width: 100%;
+      margin-top: 0.5em;
+      opacity: 0.8;
+      }
+
+      #objects div p {
+      margin: 0.3em;
+      padding: 0;
+      }
+      
+      #testArea {
+      width: 38em;
+      min-height: 12em;
+      border: 1px dashed grey;
+      border-radius: 0.4em;
+      }
+
+      .dog {
+      background: url("dog.png");
+      }
+
+      .cat {
+      background: url("cat.png");
+      }
+    </style>
+  </head>
+
+  <body>
+    <ul id="testArea"></ul>
+
+    <p>
+      <label for="propertyName">Property to test</label>
+      <input type="text" id="propertyName" />
+    </p>
+
+    <div id="objects"></div>
+
+    <h3>New pet</h3>
+    <p><input type="text" id="petName"></p>
+    <button type="button" id="catBtn">Cat</button>
+    <button type="button" id="dogBtn">Dog</button>
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/prototype/1.7.2.0/prototype.js"></script>
+    
+    <script src="animals.js"></script>
+  </body>
+</html>

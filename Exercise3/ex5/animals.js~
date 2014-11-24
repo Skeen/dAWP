@@ -1,0 +1,11 @@
+var Pet = Class.create({
+    
+});
+
+var Cat = Class.create(Pet, {
+    
+});
+
+var Dog = Class.create(Pet, {
+    
+});

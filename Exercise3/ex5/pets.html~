@@ -1,0 +1,10 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Pets</title>
+  </head>
+
+  <body>
+    <script src="animals.js"></script>
+  </body>
+</html>
