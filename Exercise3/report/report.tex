@@ -29,9 +29,36 @@ If all the checks are done, and 'isSorted' is still true, the game is won, and a
 \section*{Fun Sorting Game}
 
 \section*{Performance comparison}
+To test the performance of the two ways of accessing attributes, two
+for loops were created - one for each way.  Both loops change the
+style attribute twice (the background alternates between red and
+blue), and reads them between each step.  Both get a new date object
+before the loop and after the loop, enabling a comparison in time.
+Both loops run 10.000 times.
+
+Strangely enough the behavior when tested actually contradicts the
+statement from the lecture.  It seems that Firefox is consistent with
+the statement whereas Chrome and reconq switch a bit between
+confirming and contradicting, although both seems to contradict almost
+consistently and the confirmation of the statement is the exception.
+Another thing noted is that Chrome seems to do some optimization
+(cache of the function results perhaps?), because after some tests,
+the set/getAttribute-way took around 8-10 ms for all 10.000 calls.
+
+This is most likely due to a lot of optimization in Chrome, and it is
+suspected that if more attributes had been included in the test the
+picture would have been different.
 
 \section*{AJAX chat}
 
 \section*{Inheritance}
+The inheritance is done using prototypejs, which made it fairly easy.
+To make testing easier it has been made so the user can fill in a name
+and press what kind of pet is desired.  Since the target audience here
+is developers who intend to break the behavior, there is no validation
+of the fields.  Thus tests such as accessing the empty property name
+is possible.  The UI though does not encapsulate trying to instantiate
+non-existing objects, but this can be tested through the JavaScript
+console.
 
 \end{document}
