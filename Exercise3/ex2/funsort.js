@@ -6,15 +6,13 @@ function reset(){
     }
 }
 
-function init(){
-    $(function() {
-            $("#sortable").sortable({
-                update: function(event, ui){
-                    checkVictory();
-                }
-            });
-            $("#sortable").disableSelection();
-        });
+$(function() {
+    $("#sortable").sortable({
+        update: function(event, ui){
+            checkVictory();
+        }
+    });
+    $("#sortable").disableSelection();
 
     reset();
 
@@ -25,7 +23,7 @@ function init(){
     } else {
         document.getElementById('playedGames').innerHTML = "Sorry, your browser does not support Web Storage...";
     }
-}
+});
 
 function checkVictory(){
     var isSorted = true;
