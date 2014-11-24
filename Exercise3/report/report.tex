@@ -11,12 +11,48 @@ K. Rohde Fischer - 20052356\\}
 \begin{document}
 \maketitle
 
-\section*{Embedded JavaScript}
-
+\section*{Administrative System}
+The json file is served locally as 'groups.js'.
+The html file is somewhat minimalistic, in that we only have two selects and a single span.
+\begin{itemize}
+\item A select for the research groups (always shown)
+\item A select for the research group member (shown when a research group is selected)
+\item A span containing the research group administrator (shown when a research group is selected)
+\end{itemize}
+The research groups and group members select, both have a dummy nothing selected member.
+As the research groups are only loaded once, theirs are hardcoded, while it's dynamical for the group members.
+When the document is first loaded, we use jquery to download the json, and populate the research groups select.
 \begin{minted}[linenos, frame=lines]{js}
-  void(window.setInterval(function() {document.title = new Date}, 1000))
+$.getJSON("groups.json", function(json)
+{
+    // Add each research group to the drop down menu
+    var research_group_selector = $('#research');
+    $.each(data, function(key, value)
+    {
+        research_group_selector.append(
+            $('<option></option>').val(key).html(value.name)
+        );
+    });
+});
 \end{minted}
+Whenever a new research group is selected, we run a handler, which updates the group members select and administrator span accordingly. 
+Assuming the dummy has been selected this handler will hide everything, if a research group is selected, their info will be loaded.
+\begin{minted}[linenos, frame=lines]{js}
+// Empty the member selector and add an empty option
+var member_selector = $('#member');
+member_selector.empty();
+member_selector.append($('<option></option>'));
+// Add each member as an option
+$.each(research_table.members, function(key, value)
+{
+    member_selector.append(
+        $('<option></option>').val(key).html(value)
+    );
+});
 
+// Set the administrator
+$('#administrator').text(research_table.admin);
+\end{minted}
 
 \section*{Drag-and-drop with jQuery UI}
 For the reimplementation, jQuery UI's sortable was used.
@@ -46,7 +82,54 @@ This is most likely due to a lot of optimization in Chrome, and it is
 suspected that if more attributes had been included in the test the
 picture would have been different.
 
-\section*{AJAX chat}
+\section*{Websocket chat}
+We've decided to implement the chat client/server communication using websockets.
+
+\subsection*{Client}
+The client is somewhat minimalistic, in that we have 3 textareas, and a single button.
+\begin{itemize}
+\item A textarea for the username
+\item A textarea for the chat history
+\item A textarea for the writing messages
+\item A button for sending the message
+\end{itemize}
+
+Upon loading the client, a connection to the server is made.
+Once the connection is open, we send a greeting message to the server, in order to check connectivity.
+When the user requests to send a message, we simply readout the textareas,
+build up a json object, stringify it, and transfer it to the server.
+\begin{minted}[linenos, frame=lines]{js}
+submit.addEventListener("click", function(ev)
+{
+    var username = document.getElementById('username');
+    var input = document.getElementById('input');
+
+    var data = {
+        sender:  username.value,
+        message: input.value
+    };
+
+    connection.send(JSON.stringify(data));
+    input.value = "";
+});
+\end{minted}
+When a message is recieved from the server, we simply parse the json it sends,
+and adds a formatted line to the chat history.
+\begin{minted}[linenos, frame=lines]{js}
+connection.onmessage = function(msg)
+{
+    var chat = document.getElementById('chat');
+    var parsed = JSON.parse(msg.data);
+    chat.value = chat.value + "\n" + parsed.sender + ": " + parsed.message;
+};
+\end{minted}
+
+\subsection*{Server}
+The server is written in node.js, and based upon the handed template.
+We maintain a list of currently connected peers (we don't actually remove peers currently).
+A peer is added to the list, each time it makes a connection to the server.
+When a peer sends a valid message to the server, it's broadcasted to all peers.
+Messages are valid, assuming their in utf8 encoding, json parsable and that the username is set.
 
 \section*{Inheritance}
 The inheritance is done using prototypejs, which made it fairly easy.
