@@ -46,5 +46,13 @@ picture would have been different.
 \section*{AJAX chat}
 
 \section*{Inheritance}
+The inheritance is done using prototypejs, which made it fairly easy.
+To make testing easier it has been made so the user can fill in a name
+and press what kind of pet is desired.  Since the target audience here
+is developers who intend to break the behavior, there is no validation
+of the fields.  Thus tests such as accessing the empty property name
+is possible.  The UI though does not encapsulate trying to instantiate
+non-existing objects, but this can be tested through the JavaScript
+console.
 
 \end{document}
