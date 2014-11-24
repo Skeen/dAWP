@@ -17,7 +17,7 @@ $(function() {
     reset();
 
     if(typeof(Storage) !== "undefined"){
-        var num_played = 0;
+        var num_played = localStorage.getItem("played");
         document.getElementById('playedGames').innerHTML = "Games played: " + num_played;
         localStorage.setItem("played", num_played);
     } else {
