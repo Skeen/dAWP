@@ -1,0 +1,80 @@
+<html>
+    <head>
+        <script type="text/javascript" src="jquery.js"></script>
+        <script>
+            $(function()
+            {
+                var data;
+                // The JSON file should be retrieved from the server using AJAX.
+                $.getJSON("groups.json", function(json)
+                {
+                    data = json;
+                    // Add each research group to the drop down menu
+                    var research_group_selector = $('#research');
+                    $.each(data, function(key, value)
+                    {
+                        research_group_selector.append($('<option></option>').val(key).html(value.name));
+                    });
+                });
+
+                // Run, when a new selection is made in the research group selector
+                $('#research').change(function()
+                {
+                    // Get the selected value (key)
+                    //var selected = $('#research option:selected').text();
+                    var selected = $('#research').val();
+                    if(selected >= 0) // Research group selected
+                    {
+                        // Show everything
+                        $('#member').show();
+                        $('#administrator').show();
+
+                        // Lookup the table for the research group
+                        var research_table;
+                        $.each(data, function(key, value)
+                        {
+                            if(key == selected)
+                            {
+                                research_table = value;
+                            }
+                        });
+
+                        // Empty the member selector and add an empty option
+                        var member_selector = $('#member');
+                        member_selector.empty();
+                        member_selector.append($('<option></option>'));
+                        // Add each member as an option
+                        $.each(research_table.members, function(key, value)
+                        {
+                            member_selector.append($('<option></option>').val(key).html(value));
+                        });
+
+                        // Set the administrator
+                        $('#administrator').text(research_table.admin);
+                    }
+                    else // Empty selected
+                    {
+                        // Hide everything
+                        $('#member').hide();
+                        $('#administrator').hide();
+                    }
+                });
+            });
+        </script>
+    </head>
+    <body>
+        <!-- At the top, the page has a select menu where the name of a research group is chosen.
+             Initially, an empty item is selected. -->
+        <select id='research'>
+            <option value="-1"></option>
+        </select>
+        <br/>
+        <!-- Next, the user picks the name of a member of that research group using another select menu.
+             If a research group has been chosen in the first menu, this second menu should only show the members of that research group. -->
+        <select id='member' hidden>
+        </select>
+        <br/>
+        <!-- In addition, the group administrator should be shown below the menus when a research group has been chosen. -->
+        <span id='administrator' hidden></span>
+    </body>
+</html>
