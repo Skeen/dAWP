@@ -1,0 +1,8 @@
+The Cat and Dog system is a fair deal easier to make with natural
+class implementations.  Especially hiding properties is easier as
+there's support in Dart for library private variables by using the
+underscore naming convention.
+
+One thing that became harder was making a tester for trying to force
+properties to be revealed.  This had to be done by using Darts
+reflection framework $mirrors$.

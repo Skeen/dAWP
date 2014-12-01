@@ -1,48 +1,98 @@
-Below is the 5 language features of Dart, that are unlike Java, but are interresting to us.
+Below is the 5 language features of Dart, that are unlike Java, but
+are interresting to us.
+
 \begin{itemize}
-\item Optional type annotations: When writing small programs, scripts alike,
-it's often abit overkill to actually write out all the type annotations, simply because the complexity of the entire program is small enough, that the type annotations do not lift their own weight in usefulness.
-Java has a known issue about the amount of boiler-plate code being massive, and forced type annotations is a part of that.
+\item Optional type annotations: When writing small programs, scripts
+  alike, it's often abit overkill to actually write out all the type
+  annotations, simply because the complexity of the entire program is
+  small enough, that the type annotations do not lift their own weight
+  in usefulness.  Java has a known issue about the amount of
+  boiler-plate code being massive, and forced type annotations is a
+  part of that.
 
-To prove the point, below is the minimal hello world program in both Java and Dart.
-\begin{minted}[linenos, frame=lines]{dart}
-void main()
-{
-  print("hello world");
-}
-\end{minted}
-And the Java equivalent;
-\begin{minted}[linenos, frame=lines]{java}
-public class HelloWorld
-{
-    public static void main(String[] args)
+  To prove the point, below is the minimal hello world program in both
+  Java and Dart.
+  \begin{minted}[linenos, frame=lines]{dart}
+    void main()
     {
-        System.out.println("Hello, World");
+      print("hello world");
     }
-}
-\end{minted}
+  \end{minted}
+  And the Java equivalent;
+  \begin{minted}[linenos, frame=lines]{java}
+    public class HelloWorld
+    {
+      public static void main(String[] args)
+      {
+        System.out.println("Hello, World");
+      }
+    }
+  \end{minted}
 
-\item Top-level functions: This applies to the rest of the boiler-plate code of the above program, namely that in Java every single function will have to be wrapped in a class.
-In Dart however, we can have functions defined on the top-level (i.e. outside of classes). Which shortens small programs, and makes code more readible.
-And alternative to this, is the use of \href{http://projectlombok.org}{Project Lambok} in Java, which uses annotations to auto-generate all of Javas boiler-plate code.
+\item Top-level functions: This applies to the rest of the
+  boiler-plate code of the above program, namely that in Java every
+  single function will have to be wrapped in a class.  In Dart
+  however, we can have functions defined on the top-level
+  (i.e. outside of classes). Which shortens small programs, and makes
+  code more readible.  And alternative to this, is the use of
+  \href{http://projectlombok.org}{Project Lambok} in Java, which uses
+  annotations to auto-generate all of Javas boiler-plate code.
 
-\item Operator Overloading: While operator overloading is usually a discussed features of programming languages, it does have it's applications. - That is; when it's not misused.
-Below is an example of a bit of matrix code, first with operator overloading, then without:
-\begin{minted}[linenos, frame=lines]{c++}
-E  =  A * (B / 2);
-E += (A - B) * (C + D);
-F  =  E;                  // deep copy of the matrix
-\end{minted}
-The above is valid C++, using operator overloading, all variables are matricies. Below is the equivalent implemented in Java: 
-\begin{minted}[linenos, frame=lines]{c++}
-E = A.times(B.divide(2));
-E = E.plus(A.minus(B).times(C.plus(D)));
-F = E.copy();             // deep copy of the matrix
-\end{minted}
-Striving the achieve clarity and readability, it's obvious that the Java code fails, because of the immense verbosity and unwanted decoupling from mathmatical notation.
-Operator overloading allows us to achieve the desired syntactical representation, which immitates usual mathmatical notation.
+\item Operator Overloading: While operator overloading is usually a
+  discussed features of programming languages, it does have it's
+  applications. - That is; when it's not misused.  Below is an example
+  of a bit of matrix code, first with operator overloading, then
+  without:
+  \begin{minted}[linenos, frame=lines]{c++}
+    E  =  A * (B / 2);
+    E += (A - B) * (C + D);
+    F  =  E;                  // deep copy of the matrix
+  \end{minted}
+  The above is valid C++, using operator overloading, all variables
+  are matricies. Below is the equivalent implemented in Java:
+  \begin{minted}[linenos, frame=lines]{c++}
+    E = A.times(B.divide(2));
+    E = E.plus(A.minus(B).times(C.plus(D)));
+    F = E.copy();             // deep copy of the matrix
+  \end{minted}
+  Striving the achieve clarity and readability, it's obvious that the
+  Java code fails, because of the immense verbosity and unwanted
+  decoupling from mathmatical notation.  Operator overloading allows
+  us to achieve the desired syntactical representation, which
+  immitates usual mathmatical notation.
 
-% Idea; compilation to javascript, versus java virtual machine / applet.
+\item $Future$ is used to handle things that might happen in the
+  future.  Because Dart is single threaded it can be quite problematic
+  waiting for an I/O operation or remote requests.  To handle this
+  $Future$ is basically creating a asynchronious callback.  If a
+  similar setup was to be done in a language such as Java threaded
+  operations will be necessary to prevent blocking.
+
+  $Futures$ also has chained calls to make it easier to handle return
+  values from the $Future$, which for instance is useful when reading
+  a file as the content will be exactly this return value.  There's
+  also chains for error handling delayed actions.  All of which would
+  require different more or less complex inheritances and threading.
+
+\item For handling events Dart uses the future system for the event
+  loop.  As Dart is single threaded there's no guarantee of when an
+  event will be executed.  Ie. if a long running task blocks execution
+  a timer event will not occur till after the long running task has
+  ended, even if the time is up.  In languages such as Java the event
+  loop will usually be part of the GUI toolkit that you are using and
+  it will be running in a separate thread.  This prevents most
+  blocking cases but in turn makes the program structure harder to
+  analyze and it can be the cause for bugs as updating the GUI from a
+  different thread than the GUI's own isn't always allowed.
+
+  In the event loop structure of Dart there is a microtask queue that
+  is always executed before the next event on the event queue.  This
+  is used for controlling the order of tasks when an event use the
+  chained then and for different small tasks.  In turn though this can
+  cause starvation of the event loop if long running tasks is run as
+  microtasks or if more microtasks keeps being added.
+
+  % Idea; compilation to javascript, versus java virtual machine / applet.
 
 \end{itemize}
 
