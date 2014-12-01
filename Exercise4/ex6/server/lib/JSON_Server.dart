@@ -44,9 +44,10 @@ class Server
   Map<String, List<String>> images = mapImages();
   Map<String, List<String>> comments = new Map<String, List<String>>();
   
-  Future<HttpServer> handler(dynamic address, int port) async
+  void handler(dynamic address, int port)
   {
-      (HttpServer.bind(address, port)).then((_server) => _server.listen((HttpRequest request) 
+      (HttpServer.bind(address, port)).then((_server)
+          => _server.listen((HttpRequest request) 
       {
         HttpResponse response = request.response;
         if(request.uri.path == '/list_images')
@@ -130,8 +131,6 @@ class Server
           }
           image_comments.add(comment);
           comments[imageID] = image_comments;
-          // Tell the browser that it was posted
-          response.write("Succes");
         }
         
         response.close();
@@ -142,19 +141,5 @@ class Server
   {
     handler(address, port);
   }
-  
 }
-/*
-String saveData()
-{
-  // snip setting up HttpRequest
-
-  var mapData = new Map();
-  mapData["language"] = "dart";
-  mapData["targets"] = new List();
-  mapData["targets"].add("dartium");
-
-  return JSON.encode(mapData);
-}
-*/
 

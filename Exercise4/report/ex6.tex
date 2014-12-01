@@ -1,0 +1,18 @@
+\subsection*{Server}
+\indent\indent The server can be started using ex6/server/bin/run.sh \\
+\noindent The server loads a list of image paths at start-up, and creates a mapping from imageIDs to image paths. It initializes a map from imageIDs to comment strings as well.
+
+The server hosts a \verb|REST API|, with 3 entry points;
+\begin{itemize}
+\item \verb|/list_images|: Which returns a JSON mapping imageIDs to image paths.
+\item \verb|/get_comments?imageID=ID|: Which retrieves comments for the url-argument passed \verb|ID|, or returns an error.
+The answer is always in JSON format, on succes it has two fields; \verb|imageID = ID| (string --> string), and \verb|comments = image_comments| (string --> list string).
+\item \verb|/post_comment?imageID=ID\&comment=com|: Which posts a comment \verb|com| for the image corresponding to the url-argument passed \verb|ID|.
+The answer is in JSON format, when an error occurs, otherwise empty.
+\end{itemize}
+
+The code was originally written using \verb|await| and \verb|async|, but we had issues with useless compiler errors, alike the one below;
+\begin{verbatim}
+runtime/vm/flow_graph_builder.cc:2226: error: unreachable code
+\end{verbatim}
+A lot of these, very unspecific errors lead us to leave the keyword approach, for the standard old \verb|Future<T>| one, and synchronous code.
