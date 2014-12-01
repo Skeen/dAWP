@@ -19,6 +19,33 @@ Trivially solved, no issues.
 \input{ex2.tex}
 
 \section*{Exercise 3}
+\begin{minted}[linenos, frame=lines]{js}
+main() {
+  print(plus(1,2));
+}
+
+plus(String s1, String s2) {
+  return s1 + s2;
+}
+\end{minted}
+The first program prints the result of the function 'plus' given two parameters. The function 'plus' requires two string parameters, but in this program, it is called with two int parameters. When the program is run in 'checked mode' we will get a type error because we try to call a function with the wrong type parameters. When the program is run in 'production mode' the program runs and prints '3'. This happens because the it ignores the string type of the parameter of the 'plus' function, and perform the plus on the ints 1 and 2 which results in 3.
+
+\begin{minted}[linenos, frame=lines]{js}
+main() {
+  Object o1 = 1;
+  Object o2 = 2;
+  print(plus(o1,o2));
+}
+
+plus(String s1, String s2) {
+  return s1 + s2;
+}
+\end{minted}
+The second program is much the same as the first program. In this program though two objects o1 and o2 is initialized to 1 and 2 respectively in the main function. If the program is run in 'checked mode' as before we get a type error because we try to pass two objects as parameters to a function which takes two strings. If the program is run in 'production mode' again the program runs and prints '3'. This is for the same reason as the first program.\\
+
+When runnig both programs in 'cheked mode' we got type errors. This is what one would expect since we try to pase parameters of the wrong type. In 'production mode' we got no warnings. Since 'checked mode' is used for developing and 'production mode' is used for launching the product it makes sence to get the warnings during development and the run with the "keep on truckin" philosophy after the product is launched.\\
+
+Java is statically typed which means that all variables need to be declared before they can be used. This involves setting the variables type. The type determines the values a variable may contain and the operations that may be performed on it. Dart is dynamically typed and has optional types, which means that you can write programs with no types whatsoever. If you do choose to add types, this will not prevent the program from compiling and running, even if the types are incomplete or wrong.\\
 
 \section*{Exercise 4}
 \input{ex4.tex}
