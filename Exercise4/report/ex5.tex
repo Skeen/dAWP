@@ -1,0 +1,48 @@
+Below is the 5 language features of Dart, that are unlike Java, but are interresting to us.
+\begin{itemize}
+\item Optional type annotations: When writing small programs, scripts alike,
+it's often abit overkill to actually write out all the type annotations, simply because the complexity of the entire program is small enough, that the type annotations do not lift their own weight in usefulness.
+Java has a known issue about the amount of boiler-plate code being massive, and forced type annotations is a part of that.
+
+To prove the point, below is the minimal hello world program in both Java and Dart.
+\begin{minted}[linenos, frame=lines]{dart}
+void main()
+{
+  print("hello world");
+}
+\end{minted}
+And the Java equivalent;
+\begin{minted}[linenos, frame=lines]{java}
+public class HelloWorld
+{
+    public static void main(String[] args)
+    {
+        System.out.println("Hello, World");
+    }
+}
+\end{minted}
+
+\item Top-level functions: This applies to the rest of the boiler-plate code of the above program, namely that in Java every single function will have to be wrapped in a class.
+In Dart however, we can have functions defined on the top-level (i.e. outside of classes). Which shortens small programs, and makes code more readible.
+And alternative to this, is the use of \href{http://projectlombok.org}{Project Lambok} in Java, which uses annotations to auto-generate all of Javas boiler-plate code.
+
+\item Operator Overloading: While operator overloading is usually a discussed features of programming languages, it does have it's applications. - That is; when it's not misused.
+Below is an example of a bit of matrix code, first with operator overloading, then without:
+\begin{minted}[linenos, frame=lines]{c++}
+E  =  A * (B / 2);
+E += (A - B) * (C + D);
+F  =  E;                  // deep copy of the matrix
+\end{minted}
+The above is valid C++, using operator overloading, all variables are matricies. Below is the equivalent implemented in Java: 
+\begin{minted}[linenos, frame=lines]{c++}
+E = A.times(B.divide(2));
+E = E.plus(A.minus(B).times(C.plus(D)));
+F = E.copy();             // deep copy of the matrix
+\end{minted}
+Striving the achieve clarity and readability, it's obvious that the Java code fails, because of the immense verbosity and unwanted decoupling from mathmatical notation.
+Operator overloading allows us to achieve the desired syntactical representation, which immitates usual mathmatical notation.
+
+% Idea; compilation to javascript, versus java virtual machine / applet.
+
+\end{itemize}
+
