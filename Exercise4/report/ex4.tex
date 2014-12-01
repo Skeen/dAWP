@@ -1,0 +1,47 @@
+The async keyword is added to the function declaration, and marks the function as asynchronous, making it return a \verb|Future<T>| immidately, rather than computing the function and returning \verb|T| itself.
+The function is scheduled to be executed, and runs asynchronously to the caller.
+
+The await keyword awaits the completion of computation for a \verb|Future<T>|, in layman terms, it suspoens execution while waiting for the future to complete.
+The result of the await expression on a \verb|Future<T>| is \verb|T|.
+
+In short, async is used to run functions asynchronously, wrapping their return types in futures. - This allows one to easily write asynchronous code.
+Await is used to wait for asynchronous functions to compute, as if they were non-async. - This allows one to easily write code which is asynchrous as if it was synchronous. 
+
+In essence, we avoid the convoluted callback handling of Javascript, or the verbose use of '\verb|.then(T)|' and heavy use of lambdas from Dart futures or the Javascript Q library. While retaining the advantages of asynchronous evaluation:
+\begin{minted}[linenos, frame=lines]{dart}
+file.exists().then((bool exists) {
+    if (!exists) {
+      file.create(recursive: true).then((File file) {
+        file.writeAsString("version=1");
+      })
+      .catchError(handleError);
+    } else {
+      file.readAsString().then((String text) {
+        int version = int.parse(text.split("=").last);
+        file.writeAsString("version=" + (version+1).toString());
+      })
+      .catchError(handleError);
+    }
+  });
+\end{minted}
+Can be rewritten to the below using async and await;
+\begin{minted}[linenos, frame=lines]{dart}
+if(!(await file.exists())) {
+      try {
+        (await file.create(recursive: true)).writeAsString("version=1");
+      } catch(exception, stackTrace) {
+        handleError(exception);
+      }
+  } else {
+      try {
+        int version = int.parse((await file.readAsString()).split("=").last);
+        file.writeAsString("version=" + (version+1).toString());
+      } catch(exception, stackTrace) {
+        handleError(exception);
+      }
+  }
+\end{minted}
+As can be seen errors are now handled using the exception handling mechanism, rather than using the catchError scheme from futures.
+
+We could achieve the same scheme as used in the second code snippet using the synchronous file IO system.
+We would however not be gaining the advantages of asynchronicity, if we were to do that.
