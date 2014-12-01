@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- Don't need the home screen support -->
+  <!-- Add to homescreen for Chrome on Android -->
+  <meta name="mobile-web-app-capable" content="no">
+  <!-- Add to homescreen for Safari on iOS -->
+  <meta name="apple-mobile-web-app-capable" content="no">
+ 
+  <link rel="stylesheet" href="styles/pets.css">
+  
+  <title>Pets</title>
+</head>
+
+<body>
+  <ul id="testArea"></ul>
+
+  <p>
+    <label for="propertyName">Property to test</label> <input
+      type="text" id="propertyName" />
+  </p>
+
+  <div id="objects"></div>
+
+  <h3>New pet</h3>
+  <p>
+    <input type="text" id="petName">
+  </p>
+  <button type="button" id="catBtn">Cat</button>
+  <button type="button" id="dogBtn">Dog</button>
+
+  <script type="application/dart" src="main.dart"></script>
+  <script data-pub-inline src="packages/browser/dart.js"></script>
+</body>
+</html>

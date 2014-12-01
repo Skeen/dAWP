@@ -1,13 +1,24 @@
-The async keyword is added to the function declaration, and marks the function as asynchronous, making it return a \verb|Future<T>| immidately, rather than computing the function and returning \verb|T| itself.
-The function is scheduled to be executed, and runs asynchronously to the caller.
+The async keyword is added to the function declaration, and marks the
+function as asynchronous, making it return a \verb|Future<T>|
+immidately, rather than computing the function and returning \verb|T|
+itself.  The function is scheduled to be executed, and runs
+asynchronously to the caller.
 
-The await keyword awaits the completion of computation for a \verb|Future<T>|, in layman terms, it suspoens execution while waiting for the future to complete.
-The result of the await expression on a \verb|Future<T>| is \verb|T|.
+The await keyword awaits the completion of computation for a
+\verb|Future<T>|, in layman terms, it suspoens execution while waiting
+for the future to complete.  The result of the await expression on a
+\verb|Future<T>| is \verb|T|.
 
-In short, async is used to run functions asynchronously, wrapping their return types in futures. - This allows one to easily write asynchronous code.
-Await is used to wait for asynchronous functions to compute, as if they were non-async. - This allows one to easily write code which is asynchrous as if it was synchronous. 
+In short, async is used to run functions asynchronously, wrapping
+their return types in futures. - This allows one to easily write
+asynchronous code.  Await is used to wait for asynchronous functions
+to compute, as if they were non-async. - This allows one to easily
+write code which is asynchrous as if it was synchronous.
 
-In essence, we avoid the convoluted callback handling of Javascript, or the verbose use of '\verb|.then(T)|' and heavy use of lambdas from Dart futures or the Javascript Q library. While retaining the advantages of asynchronous evaluation:
+In essence the convoluted callback handling of Javascript is avoided
+or the verbose use of '\verb|.then(T)|' and heavy use of lambdas from
+Dart futures or the Javascript Q library. While retaining the
+advantages of asynchronous evaluation:
 \begin{minted}[linenos, frame=lines]{dart}
 file.exists().then((bool exists) {
     if (!exists) {
@@ -41,7 +52,9 @@ if(!(await file.exists())) {
       }
   }
 \end{minted}
-As can be seen errors are now handled using the exception handling mechanism, rather than using the catchError scheme from futures.
+As can be seen errors are now handled using the exception handling
+mechanism, rather than using the catchError scheme from futures.
 
-We could achieve the same scheme as used in the second code snippet using the synchronous file IO system.
-We would however not be gaining the advantages of asynchronicity, if we were to do that.
+The same scheme as used in the second code snippet could be achieved
+using the synchronous file IO system, however not gaining
+the benefits of asynchronicity, if that is done.
