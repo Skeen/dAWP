@@ -1,0 +1,44 @@
+#objects {
+  width: 40em;
+  min-height: 12em;
+  border: 1px dashed grey;
+  border-radius: 0.4em;
+  background: #DDFFDD;
+}
+
+#objects div {
+  position: relative;
+  display: inline-block;
+  width: 8em;
+  padding: 0.3em;
+  margin: 0.6em;
+  border: 1px dashed grey;
+  border-radius: 0.4em;
+  baclground: #DDDDFF;
+}
+
+#objects div button {
+  width: 100%;
+  margin-top: 0.5em;
+  opacity: 0.8;
+}
+
+#objects div p {
+  margin: 0.3em;
+  padding: 0;
+}
+
+#testArea {
+  width: 38em;
+  min-height: 12em;
+  border: 1px dashed grey;
+  border-radius: 0.4em;
+}
+
+.Dog {
+  background: url("../dog.png");
+}
+
+.Cat {
+  background: url("../cat.png");
+}
