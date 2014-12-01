@@ -16,7 +16,14 @@ void main() {
     ..addRoute(name: 'gallery', defaultRoute: true, path: '/', enter: showGallery);
   router.listen();
   
+  querySelector("#submitComment").onClick.listen(submitComment);
   loadImages();
+}
+
+void submitComment(Event event) {
+  // Eh post request perhaps?
+  var url = "http://localhost:4111/post_comment?imageID=1&comment=LOL";
+  request.open("POST", url, async: false);
 }
 
 void showImage(RouteEvent e) {
@@ -31,7 +38,7 @@ void showGallery(RouteEvent e) {
 }
 
 void loadImages() {
-  var url = "http://127.0.0.1:8080/programming-languages";
+  var url = "http://localhost:4111/list_images";
   var request = HttpRequest.getString(url).then(onImagesLoaded);
 }
 
@@ -51,7 +58,7 @@ void onImagesLoaded(String responseText) {
 void loadImage(int id) {
   router.gotoUrl("image");
   commentsList.children.clear();
-  var url = "http://127.0.0.1:8080/programming-languages";
+  var url = "http://localhost:4111/get_comments?imageID=" + id.toString();
   var request = HttpRequest.getString(url).then((responseString) {
     // Assumes list of string, isn't this better than including the image
     // id anyway? It is in the request and is rather redundant
