@@ -1,0 +1,10 @@
+
+
+
+
+Stored XSS vs AJAX
+The following string enters the attack
+", foo: function() {alert("You got hacked");}(), bar: "
+The idea springs from the data structure returned in: http://google-gruyere.appspot.com/604177436824/feed.gtl?uid= (where the number is your profile number), where the JavaScript structure can be augmented with a one-shot-closure.
+
+
