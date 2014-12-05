@@ -18,3 +18,11 @@ The following string enters the attack
 The idea springs from the data structure returned in: http://google-gruyere.appspot.com/604177436824/feed.gtl?uid= (where the number is your profile number), where the JavaScript structure can be augmented with a one-shot-closure.
 
 Reflected XSS via AJAX
+
+
+---
+Elevation of Privilege
+Add a field to the profile named is_admin with the value True, then log off and on again and bam!
+<input type="hidden" name="is_admin" value="True">
+
+
