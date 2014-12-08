@@ -1,0 +1,74 @@
+\documentclass[a4paper,10pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{listings}
+\usepackage{minted}
+\usepackage{hyperref}
+
+\title{Vulnerabilities and Flapjax}
+\author{Søren Krogh -  20105661 \\
+Emil Madsen - 20105376  \\
+K. Rohde Fischer - 20052356\\}
+\begin{document}
+\maketitle
+
+\section*{Exploiting Gruyere}
+\subsection*{Cross-Site Scripting}
+The cross site scripting is a really set of attacks, because if
+executed correctly.  The attacks can be used to achieve any number of
+goals.  Most of them are based of taking completely control of the
+site.  For instance the fact that file upload can be used to upload
+websites enables us to set up a fake site that in all ways looks
+authentic, because it by all means of validations is part of the
+actual page.
+
+Quite a few of the attacks uses the way data is inserted into the site
+to inject JavaScript, for instance by exploiting the way attributes
+are written to insert a harmful script.  For example if the color is
+set to $\#"~onmouseover="alert(42)$ the tag for the user name will
+have an onmouseover-attribute that can execute harmful code.
+
+Also sending users URLs can enable execution of harmful code and also
+the AJAX calls can be exploited because they execute the code returned
+(that should be clean JSON, but might not be).
+
+The XSS attacks provides a quite dangerous set of attacks as they
+potentially provide full control over what the client does from the
+second it is executed.  The attack can basically just add a script tag
+providing the full attack code.
+
+\subsection*{Client-State manipulation}
+Manipulating the client stage provides is a way to forge requests, the
+typical usage would be either escalating the users privileges such as
+in the Gruyere example or for manipulating sites to have a wrong
+behavior, such as a shop thinking the total price of a shopping basket
+it 0.
+
+\subsection*{Cross-Site Request Forgery}
+The XSRF attack is a bit similar to the XSS, as it also provides a way
+to make the user execute unintended actions.  The Gruyere example is
+deleting a snippet, but could also be to make users upload intended
+things.  
+
+An interesting detail in the type of attack is that it can for
+instance be used in cases where you don't have admin rights, but need
+the admins permissions to do other attacks such as XSS.  Also due to
+the fact the the simplest way to perform an XSRF is by the get
+parameters, a lot of developers is wrongly let to believe post is more
+secure.  This however is not true as the attacking site could have a
+hidden form that submits to the site under attack and then having a
+JavaScript that automatically submits.
+
+\subsection*{Path Traversal}
+Path traversal is used to either reveal secret info or to
+place/replace files in the system.  This can be anything from
+replacing a list of users to replacing for instance the index-page of
+a site or even worse in the cases where the uploads are not properly
+checked even uploading files that will be executed by the server.
+This can in worst case be used to replace the entire code base of a
+site with the code intended by a malicious person.
+
+\section*{XSS and XSRF in node.js}
+
+\section*{Flapjax}
+
+\end{document}

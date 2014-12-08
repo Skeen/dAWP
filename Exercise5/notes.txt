@@ -18,11 +18,20 @@ The following string enters the attack
 The idea springs from the data structure returned in: http://google-gruyere.appspot.com/604177436824/feed.gtl?uid= (where the number is your profile number), where the JavaScript structure can be augmented with a one-shot-closure.
 
 Reflected XSS via AJAX
-
+Set the uid in the url
 
 ---
 Elevation of Privilege
 Add a field to the profile named is_admin with the value True, then log off and on again and bam!
 <input type="hidden" name="is_admin" value="True">
 
+Cookie manipulation
+Create a user with the username: foo|admin|author
+
+---
+Read secret.txt
+Visit the URL: http://google-gruyere.appspot.com/604177436824/..%2fsecret.txt the %2f is to avoid the url optimization that happens with ../
+
+Uploading new secret.txt
+Can be done by creating a user that forces a directory escape, such as naming the user .. or foo/../.. then uploading a new secret.txt
 
