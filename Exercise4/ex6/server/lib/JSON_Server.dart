@@ -50,6 +50,8 @@ class Server
           => _server.listen((HttpRequest request) 
       {
         HttpResponse response = request.response;
+        response.headers.add("Access-Control-Allow-Origin", "*");
+        response.headers.add("Access-Control-Allow-Methods", "POST,GET,DELETE,PUT,OPTIONS");
         if(request.uri.path == '/list_images')
         {
           response.write(JSON.encode(images));

@@ -23,7 +23,7 @@ void main() {
 void submitComment(Event event) {
   // Eh post request perhaps?
   var url = "http://localhost:4111/post_comment?imageID=1&comment=LOL";
-  request.open("POST", url, async: false);
+  HttpRequest.getString(url);
 }
 
 void showImage(RouteEvent e) {
