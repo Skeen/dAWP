@@ -1,0 +1,60 @@
+Flapjax is a language designed for contemporary web applications. With a little effort, Flapjax can also be used as JavaScript library. This will be covered later in this section.
+
+Flapjax is build on top of JavaScript, this means that it works with existing JavaScript code, and runs in unmodified browsers. As mentioned above, It can be used either as a language or which is then compiled to JavaScript, or it can be used as a library to JavaScript.
+
+One might aske why it was decided not to design a language from scratch but instead to engieneer Flapjax ontop of JavaScript. In the paper "Flapjax: A Programming Language for Ajax Applications" they point out three important benefits of JavaScript; First, it is found in all modern browsers which means that it has become a common language for web applications. Secondly, it reifies the entire content of the current web page into a single data structure called the (DOM)Document Object Model, so that developers con address and modify all aspects of the current page. This also includes the visual style. Thirdly, it provides a primitive, XMLHttpRequest, that permits asynchronous communication without reloading the current page.
+
+Falpjax is a reactive language, which means that it automatically trackes datadependencies and propagates updates along those dataflows. In effect, if a developer defines y = f(x) and if the value x then changes, y is automatically recomputed, which is nice! 
+It does this by basically augmenting JavaScript with two new kinds of data. A behavior is more or less like a variable, it always has a value, but in contrast to a variable changes to a behavior propagates automatically. An event stream is potentially an infinite stream of events whose new events trigger additional computation. 
+
+One thing that Flapjax gets rid of is callbacks. To better show this, we present two versions of the same program, the first in JavaScript and the second in Flapjax.
+The program displays a counter that increments every second until the reset button is pressed.
+
+\begin{minted}[linenos, frame=lines]{js}
+var timerID = null;
+var elapsedTime = 0;
+
+function doEverySecond() {
+	elapsedTime += 1;
+	document.getElementById("curTime")
+			.innerHTML = elapsedTime; }
+function startTimer() {
+	timerId = setInterval("doEverySecond()", 1000); }
+function resetElapsed() {
+	elapsedTime = 0; }
+
+<body onload='startTimer()'>
+<input id="reset" type="button" value="Reset"
+		onclick="resetElapsed()"/>
+<div id="curTime" >  </div>
+</body>
+\end{minted}
+
+In the program above, the variable elapsedTime is set a total of three times, and only used once. The problem here isn't JavaScript, but rather the use of callbacks and the effect they have on the structure of the program. Callbacks are invoked by a generic event loop which has no knowledge of the application's logic, so it would be meaningless for a callback to compute and return a non-trivial value.
+
+\begin{minted}[linenos, frame=lines]{js}
+var nowB = timer(1000);
+var startTm = nowB.valueNow();
+varclickTmsB = \$E("reset","click").snapshot(nowB)
+				.startsWith(startTm);
+
+var elapsedB = now - clickTmsB;
+insertValueB(elapsedB, "curTime", "innerHTML");
+
+<body onload="loader()" >
+<input id="reset" type="button" value="Reset"/>
+<div id="curTime" >  </div>
+</body>
+\end{minted}
+
+In the Flapjax version above, we see that callbacks are now absent. The developer simply expresses the dependencies between expressions, and leaves it to the language to schedule updates. Said in other words, the developer has left the maintenance of consistency to the language.
+
+The above is an example of buttons understod as event streams and clocks as behaviors. Flapjax makes it possible for developers to treat all other components of Ajax programs in these terms.
+
+As we mentioned earlier, Flapjax can, with a little extra work, be directly used as a library to JavaScript. With Flapjax as a language, the compiler compiles files containing HTML, JavaScript and Flapjax. The Flapjax code is identified by:
+
+\begin{minted}[linenos, frame=lines]{js}
+<script type="text/flapjax" >
+\end{minted}
+
+The compiler transforms Flapjax code into JavaScript, and produces a standard web page of just HTML and JavaScript. Whitout the compiler, this transformation has to be performed manually. A drawback to using the compiler is, that it adds an additional step to every update during development. Whitout the compiler the developer simply just saves the project and refreshes the browser.
