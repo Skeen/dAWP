@@ -1,0 +1,38 @@
+<html>
+    <head>
+        <title>Ice cream online</title>
+        <!-- Write an HTML document with the form and JavaScript code
+             to continuously enforce the constraints.  If the current
+             data in the form is invalid, the user is notified by an
+             appropriate message somewhere on the page.  Clicking
+             'submit' will result in an alert window popping up rather
+             than the data being submitted to the server (assuming
+             that the browser does execute the JavaScript code). -->
+    </head>
+    <body>
+        <!-- A Web shop wants to sell ice cream online. -->
+        <h1>Ice cream online</h1>
+        <!-- They offer 5 different kinds of toppings:
+             sprinkles, chocolate chips, strawberry syrup,
+             banana flakes, and caramel sauce.
+             Toppings are chosen using 5 check boxes. -->
+        Toppings;
+        <form>
+            <input type="checkbox" id='sprinkles'>Sprinkles</input><br/>
+            <input type="checkbox" id='choco_chip'>Chocolate Chips</input><br/>
+            <input type="checkbox" id='straw_syrup'>Strawberry Syrup</input><br/>
+            <input type="checkbox" id='banana_flakes'>Banana Flakes</input><br/>
+            <input type="checkbox" id='caramel_sauce'>Caramel Sauce</input><br/>
+            <input type='button' id='submit' value='Order'></button>
+            <input type="submit" id='submit_action' style="display: none;"/>
+        </form>
+        <!-- Holds an error message, assuming there is an error current selection. -->
+        <textarea rows="4" cols="50" id='error' disabled='true'>
+        </textarea>
+        <!-- However, some constraints apply:
+             * At most three toppings may be selected.
+             * Strawberry syrup and caramel sauce cannot both be chosen
+                (too messy!) -->
+        <script src="index.js"></script> 
+    </body>
+</html>

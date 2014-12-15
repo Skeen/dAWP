@@ -1,0 +1,9 @@
+describe('Fun Sort1', function() {
+	it('gelValue should NOT return null; not.toBe', function() {
+		expect(getValue('1')).toBe(undefined);
+	});
+
+	it('gelValue should NOT return null; not.toBeNull', function() {
+		expect(getValue('3 dsaasd 2')).toEqual('2');
+	});
+});
