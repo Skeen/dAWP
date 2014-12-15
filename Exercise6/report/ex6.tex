@@ -1,3 +1,37 @@
 % Create an AngularJS directive that can be used as follows to show a number of stars (like in the homework peer-reviewing system):
 % <rating stars="3" max="5" />
 % Bonus: make it possible to adjust the rating by clicking on a star, and such that a callback is triggered whenever the user changes the rating (allowing, for instance, the client code to send the changes to the server).
+Note: We did not do the bonus part of this exercise.
+
+We've created an \verb|index.html| file, with the following contents;
+\begin{minted}[linenos, frame=lines]{html}
+...
+<body ng-app="magica">
+<div ng-controller="Controller">
+    <rating stars="4" max="5"/>
+</div>
+</body>
+...
+\end{minted}
+Where we're utilizing our rating directive, which is defined within our \verb|script.js|;
+\begin{minted}[linenos, frame=lines]{js}
+controller.directive('rating', function()
+{
+    return { template: function(elem, attr) {
+        var stars = attr['stars'];
+        var max = attr['max'];
+        if((stars > max) || (stars < 0)) {
+            return "Invalid number of stars";
+        }
+        var star_html = '<img src="star.jpg" height="42" width="42"/>';
+        function repeat(str, times) {
+            return new Array(times + 1).join(str);
+        }
+        return repeat(star_html, Number(stars));
+    }};
+});
+\end{minted}
+We consider the code very self-explainatory, but we've like to add a single remark.
+One could argue that we've should use a more AngularJS stylish approach to generating the number of stars.
+We've decided to go with the poor-mans approach of simply duplicating an image tag,
+as the focus on of the exercise was to do the directive, not the implementation details of what it does.

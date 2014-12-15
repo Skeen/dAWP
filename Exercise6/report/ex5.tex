@@ -1,2 +1,69 @@
 % Rewrite the AngularJS form validator such that the form described in fieldsets.json is dynamically loaded, displayed using the template mechanism of AngularJS, and properly validated (with colors). Your application should generate HTML similar to form-validator-dynamic-example.html (ignoring colors).
 % Hint: You can use the ng-if directive in the HTML code to generate separate HTML code for paragraphs and input fields.
+Note: We're confused about the rewrite part, as we don't recall being handed or having written a form validator previously.
+
+Our AngularJS app is in essence very simple. We've setup our \verb|index.html|,
+to load our \verb|app.js| file, which in it's entirety contains the following;
+\begin{minted}[linenos, frame=lines]{js}
+var myApp = angular.module('myApp', []);
+
+myApp.controller('BodyController', ['$scope', '$http',
+    function($scope, $http)
+    {
+        $http.get('/fieldsets.json').success(function(data) {
+            $scope.fieldsets = data;
+        });
+    }
+]);
+\end{minted}
+So we simply load the \verb|fieldsets.json|, which has been handed to us, as a scope field.
+All the actual markup is done within the \verb|index.html| file, as one would expect.
+\\
+The field sets are loaded using an \verb|ng-repeat|;
+\begin{minted}[linenos, frame=lines]{html}
+ <body ng-controller="BodyController">
+    <div>
+      <h1>Select a form to submit:</h1>
+      <form method="post" action="post_url_here">
+        <fieldset ng-repeat="field in fieldsets">
+        ...
+        </fieldset>
+        <fieldset>
+          <input type="submit" name="submitter" value="submit">
+        </fieldset>
+      </form>
+    </div>
+</body>
+\end{minted}
+So all of the work is really contained within this fieldset repeat.
+We start off by defining the form radio buttons;
+\begin{minted}[linenos, frame=lines]{html}
+<label for="formSelector{{field.formSelectorId}}">
+    <input type="radio" id="formSelector{{field.formSelectorId}}"
+        name="formSelector" value="form{{field.formSelectorId}}">
+    Form {{field.formSelectorId}}
+</label>
+\end{minted}
+Not a lot of suprising stuff here, nothing but simple AngularJS databinding.
+\\
+The actual form fields are handled by this code below;
+\begin{minted}[linenos, frame=lines]{html}
+<span ng-repeat="child in field.children">
+    <p ng-if="child.type === 'paragraph'">
+        {{child.text}}
+    </p>
+    <label ng-if="child.type === 'inputfield'">
+        {{child.label}}: <input name="{{child.name}}"
+                            ng-model="inputfield_value">
+        <span class='error' ng-if="inputfield_value.length
+                                    !== child.characters">
+            : Invalid form input
+        </span>
+    </label>
+</span>
+\end{minted}
+This code is somewhat simplistic too, the general structure is that we loop through each of the requested field children.
+We then check, which kinda child to instantiate, if we're requested to do a paragraph, we simply build one with the corresponding text.
+If we're requested to do an input field, we're do so in accordance to the handed out goal.
+We've included an error span, which is shown whenever we do not fulfill the input requirement.
+
