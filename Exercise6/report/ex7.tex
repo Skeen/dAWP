@@ -1,1 +1,11 @@
 % Write some unit tests and end-to-end tests using Jasmine and Protractor for some of the web applications you have written during the course. Try to pick some interesting properties to test and explore the main capabilities of Jasmine and Protractor as presented in the lecture.
+When using Karma and Jasmine, we had some problems getting it up and running. In the end we solved these problems.
+We chose to test our first version of the funsort game. 
+As for the tests we chose some simple ones. The first test checked that the method getValue() with input '1' would result in 'undefined'. The second test also tested the method getValue(). In this test we gave '3 dsaasd 2' as input, and we expected it to result in '2', whích it did.
+\\
+\\
+We also had some problems using Protractor and Selenium WebDriver. These problems it turned out, was caused by us testing one of our non-angular apps. We solved this problem by 'browser.driver.get' instead of 'browser.driver' and 'browser.driver.findElement()' instead of 'element()'.
+We tested the Ice cream online app and set up three tests to test the output of the textarea depending on which checkboxes was checked.
+\\
+\\
+In general we find these testing tools very usefull in giving the developer a reasurance that the app workes, without adding too much additional work.
