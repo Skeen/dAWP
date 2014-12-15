@@ -1,0 +1,34 @@
+[
+	{
+		"formSelectorId": "1",
+		"children": [
+			{
+				"type": "paragraph",
+				"text": "Fill out the input field below:"
+			},
+			{
+				"type": "inputfield",
+				"label": "Enter a 1 character string",
+				"name": "textField1",
+				"characters": 1
+			}
+		]
+	},
+	{
+		"formSelectorId": "2",
+		"children": [
+			{
+				"type": "inputfield",
+				"label": "Enter a 2 character string",
+				"name": "textField2",
+				"characters": 2
+			},
+			{
+				"type": "inputfield",
+				"label": "Enter a 3 character string",
+				"name": "textField3",
+				"characters": 3
+			}
+		]
+	}
+]

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+<head>
+    <title>Functional Form Validator in AngularJS</title>
+    <style type="text/css">
+    label { display: block; padding: 5px; }
+    fieldset { background-color: rgb(255, 255, 255); border-style: solid; border-width: 3px; margin: 20px 0px; }
+    fieldset:last-child { margin-top: 20px; border: 0px; }
+    .error { background-color: red; }
+    </style>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.6/angular.min.js"></script>
+    <script src="app.js"></script>
+  </head>
+  <body ng-controller="BodyController">
+    <div>
+      <h1>Select a form to submit:</h1>
+      <form method="post" action="index.html/#">
+        <fieldset ng-repeat="field in fieldsets">
+            <label for="formSelector{{field.formSelectorId}}">
+                <input type="radio" id="formSelector{{field.formSelectorId}}" name="formSelector" value="form{{field.formSelectorId}}">
+                Form {{field.formSelectorId}}
+            </label>
+            <div>
+                <span ng-repeat="child in field.children">
+                    <p ng-if="child.type === 'paragraph'">
+                        {{child.text}}
+                    </p>
+                    <label ng-if="child.type === 'inputfield'">
+                        {{child.label}}: <input name="{{child.name}}" ng-model="inputfield_value">
+                        <!--
+                        value = {{inputfield_value}}
+                        -->
+                        <span class='error' ng-if="inputfield_value.length !== child.characters">
+                            : Invalid form input
+                        </span>
+                    </label>
+                </span>
+            </div>
+        </fieldset>
+        <fieldset>
+          <input type="submit" name="submitter" value="submit">
+        </fieldset>
+      </form>
+    </div>
+</body>
+</html>
