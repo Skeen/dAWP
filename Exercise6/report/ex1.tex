@@ -3,3 +3,175 @@
 % 2. how the most interesting new language features are compiled to JavaScript (with your thoughts on how the resulting code works),
 % 3. how the type checking works, and
 % 4. pros and cons compared to JavaScript and Dart.
+
+\subsection*{New language features}
+\subsubsection*{Type annotations}
+TypeScript enchances JavaScript with the addition of optional type annotations.
+There type annotations are compile-time only, in order to ease static analysis tools in guiding JavaScript development.
+That is, the types are not, in any way, present at runtime. They do however allow the programmer to state the intent of types in the program.
+
+Say we wanted to create a function which adds two numbers;
+\begin{minted}[linenos, frame=lines]{js}
+function add(n1, n2) {
+    return n1 + n2;
+}
+add(1, 5);
+\end{minted}
+Nothing wierd this far, however contrary to what may be expected, we can do this invokation as well;
+\begin{minted}[linenos, frame=lines]{js}
+add("a", "b");
+\end{minted}
+In this tiny example, there doesn't seem to be an issue, as the code is indeed still valid.
+
+Say we wrote a unit test to the above code alike this;
+\begin{minted}[linenos, frame=lines]{js}
+function comm_test_add(n1, n2) {
+    assert(add(n1,n2) === add(n2,n1))
+}
+comm_test_add(1,2);
+\end{minted}
+We'll now see that our commutativity property of plus fails, when the add function is given string arguments.
+As we should never break the mathmatical properties of operators, because they're commonly agreed on.
+We'd like to limit our add function to only accept types, for which the operator properties hold.
+The way to do this in TypeScript would be to hookup type annotations for our add function;
+\begin{minted}[linenos, frame=lines]{ts}
+function add(n1 : number, n2 : number) {
+    return n1 + n2;
+}
+\end{minted}
+Now trying to do our previous invokation;
+\begin{minted}[linenos, frame=lines]{js}
+add("a", "b");
+\end{minted}
+Does not go through, but is instead statically captured by the TypeScript compiler, which produces the following error message;
+\begin{minted}[linenos, frame=lines]{js}
+add.ts(4,17): error TS2345: Argument of type 'string' is not
+    assignable to parameter of type 'number'
+\end{minted}
+We've now ensured that the poor mathmatician doesn't have to cry over the broken properties of addition.
+
+\subsubsection*{Structured data interfaces}
+When writing methods that accept JavaScript Objects as arguments,
+we usually have a fairly strict idea of which fields to expect on the object
+(We should at least).
+
+However JavaScript does not directly support a language feature to express this; Introducing data interfaces:
+\begin{minted}[linenos, frame=lines]{ts}
+interface Person {
+    firstname: string;
+    lastname: string;
+}
+\end{minted}
+This is essence introduces a new type, for us to use as an optional type annocation.
+It allows for the compiler to statically check for the excistance of the required fields on provided objects.
+\\
+Trying to call a function, without the required arguments yields a compiler error;
+\begin{minted}[linenos, frame=lines]{ts}
+function greeter(person : Person) {
+    return "Hello, " + person.firstname + " " + person.lastname;
+}
+greeter({firstname: "Peter"});
+
+------
+greeter.ts(10,9): error TS2345:
+    Argument of type '{ firstname: string; }' is not assignable
+        to parameter of type 'Person'.
+  Property 'lastname' is missing in type '{ firstname: string; }'.
+\end{minted}
+
+\subsubsection*{Classes}
+TypeScript introduces the well-known concept of classes, complete with the concept of constructors, member methods, inheritance, alike.
+A thorough examination of this language feature will not be executed here, we will instead focus on the compilation of TypeScript classes to JavaScript.
+
+\subsection*{TypeScript to JavaScript compilation}
+When compiling TypeScript classes to JavaScript, there is actually some transformation going on, rather than just removal of code, as is the case with the optional type annotations.
+
+Below is an example of a simple TypeScript class implementation;
+\begin{minted}[linenos, frame=lines]{ts}
+class Greeter {
+    greeting: string;
+    constructor(message: string) {
+        this.greeting = message;
+    }
+    greet() {
+        return "Hello, " + this.greeting;
+    }
+}
+\end{minted}
+The code is very self explainatory, and hence we'll just move on to the compiled JavaScript output;
+\begin{minted}[linenos, frame=lines]{js}
+var Greeter = (function () {
+    function Greeter(message) {
+        this.greeting = message;
+    }
+    Greeter.prototype.greet = function () {
+        return "Hello, " + this.greeting;
+    };
+    return Greeter;
+})();
+\end{minted}
+We see that the class has now been replaced by a JavaScript object.
+The constructor has been created as an explicit function, and everything is as-if we've written the class ourselves in JavaScript.
+That is, the JavaScript compilation output resembles the JavaScript class idiom.
+It's worth nothing that the greet method is now placed on the prototype, as it ought to be.
+
+\subsubsection*{Inheritance}
+Things get a little bit interesting when we inspect inheritance, in regards to the compiler output, given the below TypeScript class hierarchy;
+\begin{minted}[linenos, frame=lines]{ts}
+class Animal {
+    constructor(public name: string) { }
+    move() { alert(this.name + " moved "); }
+}
+class Snake extends Animal {
+    constructor(name: string) { super(name); }
+    move() { super.move(); }
+}
+\end{minted}
+We do get somewhat more code from the compiler, than went in;
+\begin{minted}[linenos, frame=lines]{ts}
+var __extends = this.__extends || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    __.prototype = b.prototype;
+    d.prototype = new __();
+};
+var Animal = (function () {
+    function Animal(name) { this.name = name; }
+    Animal.prototype.move = function ()
+    { alert(this.name + " moved "); };
+    return Animal;
+})();
+var Snake = (function (_super) {
+    __extends(Snake, _super);
+    function Snake(name) { _super.call(this, name); }
+    Snake.prototype.move = function ()
+    { _super.prototype.move.call(this); };
+    return Snake;
+})(Animal);
+\end{minted}
+First, we have a piece of code, which implements the inheritence pattern (lines $1\rightarrow6$).
+This is automatically injected by the compiler, whenever inheritance is found within the TypeScript code.
+\\
+The generated code for Animal, is as we'd expect i.e. in regards to the Greeter class in the previous section.
+\\
+The snake class is where it gets interresting. We have an injected call to the injected inheritance pattern code, which insures that we get to inherit properties correctly.
+The rest of the code is somewhat straight forward.
+
+\subsection*{Comparison versus JavaScript and Dart}
+The languages are very different in regards to type-safety and static analysis tools.
+Ranging from not providing anything at all (JavaScript), to ad-hoc post fitting a type system (TypeScript), all the way to designing a language with a fully fledged type system (Dart).
+\\
+We generally want as much static analysis, and help as feasible, and hence the question of feasibility becomes central.
+Feasibility is however, a very subject being, both in terms of the developer and what's being developed.
+\\
+While one developer may find it feasible to learn an entire new language, toolchain and framework for interacting with JavaScript and/or the DOM.
+\\
+Other developers may just be going for the easier approach found in TypeScript, and settle with less help through static analysis.
+\\
+Some developers may even accept that they're all on their own, and just write pure JavaScript, wishing for the best of luck.
+
+So generally speaking, it's just a question of the effort the developer wants to put into getting reasonable type annotations and static analysis.
+Both TypeScript and Dart compiles down to JavaScript, and hence can be run on the same platforms.
+Debugging the compiled JavaScript from the Dart compiler, is however something of a challenge, compared to the TypeScript's JavaScript output, simply because while TypeScript remains a somewhat 1-1 correspondance, Dart does not.
+
+We do believe that Dart is a very interresting language in regards to getting the typesafety and static analysis that we want, however TypeScript is just a much easier choice, as it's just a superset of JavaScript.
