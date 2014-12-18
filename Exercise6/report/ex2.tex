@@ -1,1 +1,12 @@
 % Re-implement the multiset datatype from week 1 using TypeScript. Make sure to take advantage of the new features in TypeScript.
+The multiset in TypeScript is fairly easy.  One thing that could have
+been done to make it resemble the Java version more is to use the
+generics from TypeScript, which hasn't been done here.  Apart from
+that it's quite straight forward using classes.
+
+Two noteworthy things is that using classes makes the one-shot
+closures becomes less natural (although still possible) for
+encapsulating $trueRemove$ and the internal data types and that
+TypeScript does not like the overload with two different return types.
+This would probably be best handled by dividing it up in two functions
+with different names.

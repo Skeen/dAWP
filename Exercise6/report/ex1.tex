@@ -6,9 +6,12 @@
 
 \subsection*{New language features}
 \subsubsection*{Type annotations}
-TypeScript enchances JavaScript with the addition of optional type annotations.
-There type annotations are compile-time only, in order to ease static analysis tools in guiding JavaScript development.
-That is, the types are not, in any way, present at runtime. They do however allow the programmer to state the intent of types in the program.
+TypeScript enchances JavaScript with the addition of optional type
+annotations.  The type annotations are compile-time only, in order to
+make it easier to make static analysis tools ti guide JavaScript
+development.  That is, the types are not, in any way, present at
+runtime. They do however allow the programmer to state the intent of
+types in the program.
 
 Say we wanted to create a function which adds two numbers;
 \begin{minted}[linenos, frame=lines]{js}
@@ -30,10 +33,15 @@ function comm_test_add(n1, n2) {
 }
 comm_test_add(1,2);
 \end{minted}
-We'll now see that our commutativity property of plus fails, when the add function is given string arguments.
-As we should never break the mathmatical properties of operators, because they're commonly agreed on.
-We'd like to limit our add function to only accept types, for which the operator properties hold.
-The way to do this in TypeScript would be to hookup type annotations for our add function;
+
+We'll now see that our commutativity property of plus fails, when the
+add function is given string arguments.  As we should never break the
+mathmatical properties of operators, because this would violate their
+definitions and what can be proven from the definitions.  We'd like to
+limit our add function to only accept types, for which the operator
+properties hold.  The way to do this in TypeScript would be to hookup
+type annotations for our add function;
+
 \begin{minted}[linenos, frame=lines]{ts}
 function add(n1 : number, n2 : number) {
     return n1 + n2;
@@ -62,7 +70,7 @@ interface Person {
     lastname: string;
 }
 \end{minted}
-This is essence introduces a new type, for us to use as an optional type annocation.
+This is essence introduces a new type, for us to use as an optional type annotation.
 It allows for the compiler to statically check for the excistance of the required fields on provided objects.
 \\
 Trying to call a function, without the required arguments yields a compiler error;
@@ -154,7 +162,7 @@ This is automatically injected by the compiler, whenever inheritance is found wi
 \\
 The generated code for Animal, is as we'd expect i.e. in regards to the Greeter class in the previous section.
 \\
-The snake class is where it gets interresting. We have an injected call to the injected inheritance pattern code, which insures that we get to inherit properties correctly.
+The snake class is where it gets interresting. We have an injected call to the injected inheritance pattern code, which ensures that we get to inherit properties correctly.
 The rest of the code is somewhat straight forward.
 
 \subsection*{Comparison versus JavaScript and Dart}
